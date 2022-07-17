@@ -22,17 +22,13 @@
 </template>
 
 <script setup>
-import { computed, defineComponent, defineProps } from "vue";
+import { computed, defineProps } from "vue";
 import { mainStore } from "../store";
 import ListTitle from "./ListTitle.vue";
 import ListItem from "./ListItem.vue";
 import CreateListItem from "./CreateListItem.vue";
 
 const store = mainStore();
-
-defineComponent({
-  components: { ListItem, ListTitle, CreateListItem },
-});
 
 defineProps({
   list: Object,
@@ -52,12 +48,17 @@ function activateCreatItem() {
   text-align: left;
 }
 
-.honeydew-list_content {
-  border: 1px solid #333;
+.honeydew-list {
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06), 0 3px 6px rgba(0,0,0,0.13);
   list-style-type: none;
-  margin-top: 0;
+  margin: 0 15px 15px;
   padding: 15px 15px 0;
+
+  &_content {
+    margin-bottom: 0;
+  }
 }
 
 .honeydew-list_create {

@@ -26,9 +26,11 @@ defineProps({
 
 .honeydew-list_title {
   align-items: center;
+  border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+  padding-bottom: 5px;
 
   &-text {
     margin: 0 0 5px;

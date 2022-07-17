@@ -1,19 +1,27 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const mainStore = defineStore("main", {
+export const mainStore = defineStore('main', {
   state: () => {
     return {
       creatingItem: false,
       listItemToAdd: null,
       todosLoading: true,
-      todoLists: [],
-      todoListToAdd: null,
+      userData: null,
+      todoListToAdd: {
+        title: '',
+        completed: false,
+        dueDate: new Date(),
+        comments: [],
+      },
     };
   },
 
   getters: {
     getTodoLists(state) {
-      return state.todoLists;
+      return state.userData;
+    },
+    getItemToAdd(state) {
+      return state.todoListToAdd;
     },
     isCreatingItem(state) {
       return state.creatingItem;
@@ -28,14 +36,18 @@ export const mainStore = defineStore("main", {
     activateCreateItem() {
       this.creatingItem = true;
     },
-    addListItem(payload) {
-      this.todoLists = payload;
+    addTodoItem() {
+      console.log('todos: ', this.userData[0]);
+      this.userData[0].todos.push(this.todoListToAdd);
     },
     cancelCreateItem() {
       this.creatingItem = false;
     },
+    deactivateCreateItem() {
+      this.creatingItem = false;
+    },
     setUserLists(payload) {
-      this.todoLists = payload;
+      this.userData = payload;
     },
   },
 });

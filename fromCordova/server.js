@@ -37,7 +37,7 @@ app.get('/lists', async (req, res) => {
   return res.status(200).json(lists);
 });
 
-app.post('/list/make', (req, res) => {
+app.put('/list/make', (req, res) => {
   console.log('req: ', req.body);
 });
 
