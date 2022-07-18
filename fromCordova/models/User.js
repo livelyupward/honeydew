@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   activeList: {
     type: Schema.Types.ObjectId,
     ref: 'todoLists',
+    required: false,
   },
 });
 

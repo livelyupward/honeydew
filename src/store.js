@@ -4,10 +4,10 @@ export const mainStore = defineStore('main', {
   state: () => {
     return {
       creatingItem: false,
-      listItemToAdd: null,
       todosLoading: true,
-      userData: null,
-      todoListToAdd: {
+      userAuth: null,
+      userData: [],
+      listItemToAdd: {
         title: '',
         completed: false,
         dueDate: new Date(),
@@ -21,14 +21,16 @@ export const mainStore = defineStore('main', {
       return state.userData;
     },
     getItemToAdd(state) {
-      return state.todoListToAdd;
+      return state.listItemToAdd;
     },
     isCreatingItem(state) {
       return state.creatingItem;
     },
-
     isFetchingTodos(state) {
       return state.todosLoading;
+    },
+    userAuthInfo(state) {
+      return state.userAuth;
     },
   },
 
@@ -37,14 +39,17 @@ export const mainStore = defineStore('main', {
       this.creatingItem = true;
     },
     addTodoItem() {
-      console.log('todos: ', this.userData[0]);
-      this.userData[0].todos.push(this.todoListToAdd);
+      console.log('todos: ', this.userData);
     },
     cancelCreateItem() {
       this.creatingItem = false;
     },
     deactivateCreateItem() {
       this.creatingItem = false;
+    },
+    loginUser(jwtPayload) {
+      console.log('type:: ', jwtPayload instanceof Object);
+      jwtPayload ? (this.userAuth = { ...jwtPayload }) : console.log('Error decoding JWT string');
     },
     setUserLists(payload) {
       this.userData = payload;

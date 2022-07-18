@@ -1,18 +1,9 @@
 <template>
   <li class="honeydew-list_item">
-    <input
-      v-model="currentTodoList.complete"
-      class="honeydew-list_item-checkbox"
-      type="checkbox"
-    />
-    <span
-      class="honeydew-list_item-text"
-      :class="currentTodoList.complete === true ? 'completed' : null"
-    >
+    <input v-model="currentTodoList.complete" class="honeydew-list_item-checkbox" type="checkbox" />
+    <span class="honeydew-list_item-text" :class="currentTodoList.complete === true ? 'completed' : null">
       {{ currentTodoList.title }}
-      <small class="honeydew-list_item-due" v-if="currentTodoList.dueDate"
-        >Due: {{ currentTodoList.dueDate }}</small
-      >
+      <small class="honeydew-list_item-due" v-if="currentTodoList.dueDate">Due: {{ currentTodoList.dueDate }}</small>
     </span>
     <button @click="openActions">
       <font-awesome-icon icon="fa-solid fa-ellipsis" />
@@ -25,9 +16,9 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits } from 'vue';
 
-defineEmits(["closeActions"]);
+defineEmits(['closeActions']);
 
 const props = defineProps({
   index: Number,
