@@ -24,8 +24,8 @@ onMounted(() => {
   const userAuthCookie = window.localStorage.getItem('honeydew_auth_token');
   if (userAuthCookie) {
     const userInfo = decodeCredential(userAuthCookie);
-    axios.get(`http://localhost:4000/user/${userInfo.email}`).then((response) => {
-      store.loginUser({ ...userInfo, avatar: response.data.avatar });
+    axios.get(`http://localhost:4000/users/${userInfo.email}`).then((response) => {
+      store.loginUser({ ...userInfo, ...response.data });
     });
     console.log('UI:: ', userInfo);
   }
@@ -41,13 +41,33 @@ body {
   padding: 0;
 }
 
+.honeydew-paper {
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+  color: #333;
+  font-size: 16px;
+}
+
 input {
+  @extend .honeydew-paper;
   font-family: 'Lato', sans-serif;
+  padding: 6px 8px;
+}
+
+label {
+  @extend .honeydew-paper;
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.06), 0 0px 2px rgba(0, 0, 0, 0.12);
+  padding: 6px 8px;
+  z-index: 10;
 }
 
 button {
+  @extend .honeydew-paper;
   cursor: pointer;
   font-family: 'Lato', sans-serif;
+  padding: 6px 15px;
 }
 
 ul {
@@ -68,6 +88,7 @@ svg {
   display: flex;
   flex-direction: column;
   font-family: 'Lato', sans-serif;
+  font-size: 18px;
   text-align: center;
 }
 </style>

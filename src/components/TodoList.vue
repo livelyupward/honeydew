@@ -2,18 +2,9 @@
   <section class="honeydew-list" v-if="list">
     <ListTitle :list-title="list.listTitle" />
     <ul class="honeydew-list_content">
-      <ListItem
-        v-for="(todo, index) in list.todos"
-        :todo="todo"
-        :index="index"
-        :key="todo.id"
-      />
-      <CreateListItem v-if="creatingItem" />
-      <button
-        class="honeydew-list_create"
-        v-if="!creatingItem"
-        @click="activateCreatItem"
-      >
+      <ListItem v-for="(todo, index) in list.todos" :todo="todo" :index="index" :key="todo.id" />
+      <CreateListItem v-if="creatingItem" :list="list" />
+      <button class="honeydew-list_create" v-if="!creatingItem" @click="activateCreatItem">
         <font-awesome-icon icon="fa-solid fa-plus" />
         <span class="honeydew-list_add">Add Item</span>
       </button>
@@ -22,11 +13,11 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from "vue";
-import { mainStore } from "../store";
-import ListTitle from "./ListTitle.vue";
-import ListItem from "./ListItem.vue";
-import CreateListItem from "./CreateListItem.vue";
+import { computed, defineProps } from 'vue';
+import { mainStore } from '../store';
+import ListTitle from './ListTitle.vue';
+import ListItem from './ListItem.vue';
+import CreateListItem from './CreateListItem.vue';
 
 const store = mainStore();
 
@@ -43,15 +34,15 @@ function activateCreatItem() {
 
 <style lang="scss" scoped>
 .honeydew-list_title {
-  font-family: "Maven Pro", sans-serif;
+  font-family: 'Maven Pro', sans-serif;
   margin-bottom: 10px;
   text-align: left;
 }
 
 .honeydew-list {
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.06), 0 3px 6px rgba(0,0,0,0.13);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.13);
   list-style-type: none;
   margin: 0 15px 15px;
   padding: 15px 15px 0;
@@ -64,6 +55,7 @@ function activateCreatItem() {
 .honeydew-list_create {
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  box-shadow: none;
   color: #333;
   display: block;
   font-size: 18px;

@@ -17,10 +17,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { mainStore } from '../store';
+import { ref, onMounted, defineProps } from 'vue';
+import { mainStore } from '@/store';
 import Datepicker from 'vue3-datepicker';
 import axios from 'axios';
+
+const props = defineProps({
+  list: Object,
+});
 
 const todoTitle = ref('');
 const todoDueDate = ref(new Date());
@@ -28,16 +32,26 @@ const todoDueDate = ref(new Date());
 const store = mainStore();
 
 function addListItem() {
-  store.addTodoItem({
-    title: todoTitle.value,
-    dueDate: todoDueDate.value,
-  });
-  todoTitle.value = '';
-  todoDueDate.value = new Date();
-  axios.put('http://localhost:4000/list/make', { ...store.todoListToAdd }).then((response) => {
-    store.deactivateCreateItem();
-    console.log('RES: ', response);
-  });
+  const dateFormatted = todoDueDate.value.toLocaleDateString();
+
+  axios // TODO: refactor adding todo via api, change this to add to /todo instead of /lists
+    .put(`http://localhost:4000/list/${props.list._id}/update`, {
+      title: todoTitle.value,
+      dueDate: dateFormatted,
+    })
+    .then((response) => {
+      store.addTodoItem({
+        title: todoTitle.value,
+        dueDate: dateFormatted,
+        comments: [],
+        complete: false,
+        listIndex: props.list.listIndex,
+      });
+      todoTitle.value = '';
+      todoDueDate.value = new Date();
+      store.deactivateCreateItem();
+      console.log('RES: ', response);
+    });
 }
 
 function cancelCreate() {

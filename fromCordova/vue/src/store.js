@@ -1,17 +1,17 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const mainStore = defineStore("main", {
+export const mainStore = defineStore('main', {
   state: () => {
     return {
       creatingItem: false,
       todosLoading: true,
       todoLists: [
         {
-          listTitle: "My Current List",
+          listTitle: 'My Current List',
           todos: [
             {
-              title: "This is my first todo",
+              title: 'This is my first todo',
               comments: [
                 {
                   commentTitle: "I'm a comment",
@@ -21,7 +21,7 @@ export const mainStore = defineStore("main", {
               dueDate: '2/12/2022',
             },
             {
-              title: "Here is my second",
+              title: 'Here is my second',
               comments: [
                 {
                   commentTitle: "I'm another comment",
@@ -32,12 +32,12 @@ export const mainStore = defineStore("main", {
             },
           ],
         },
-      ]
+      ],
     };
   },
 
   getters: {
-    getTodoLists(state) {
+    getUserFromDb(state) {
       return state.todoLists;
     },
     isCreatingItem(state) {
@@ -54,9 +54,12 @@ export const mainStore = defineStore("main", {
       this.creatingItem = true;
     },
     addListItem(payload) {
-      axios.post(`http://localhost:4000`, payload).then((response) => {
-        console.log("API Response:: ", response);
-      }).catch((error) => console.log("Error:: ", error))
+      axios
+        .post(`http://localhost:4000`, payload)
+        .then((response) => {
+          console.log('API Response:: ', response);
+        })
+        .catch((error) => console.log('Error:: ', error));
     },
     cancelCreateItem() {
       this.creatingItem = false;

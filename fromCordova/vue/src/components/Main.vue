@@ -5,20 +5,23 @@
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
-import {mainStore} from '../store';
-import TodoList from "./TodoList.vue";
+import { reactive, onMounted } from 'vue';
+import { mainStore } from '../store';
+import TodoList from './TodoList.vue';
 import axios from 'axios';
 
 const store = mainStore();
-const todoLists = reactive(store.getTodoLists);
+const todoLists = reactive(store.getUserFromDb);
 
 onMounted(() => {
   console.log('App initialized');
-  axios.get('http://localhost:4000').then((response) => {
-    console.log('RES:: ', response);
-  }).catch(err => console.log("Error:: ", err));
-})
+  axios
+    .get('http://localhost:4000')
+    .then((response) => {
+      console.log('RES:: ', response);
+    })
+    .catch((err) => console.log('Error:: ', err));
+});
 </script>
 
 <style lang="scss" scoped>

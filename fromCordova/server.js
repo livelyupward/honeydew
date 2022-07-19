@@ -13,9 +13,12 @@ const dbCredentials = {
   password: 'G2gpiOD36YqHihJM',
 };
 
-require('./models/TodoList');
+const users = require('./routes/users');
+const lists = require('./routes/lists');
+
+require('./models/List');
 require('./models/User');
-const TodoList = mongoose.model('todoLists');
+const List = mongoose.model('lists');
 const User = mongoose.model('users');
 
 app.use(cors());
@@ -70,7 +73,7 @@ app.get('/lists/:email', async (req, res) => {
   try {
     const email = req.params.email;
     const loggedUser = await User.findOne({ email });
-    const lists = await TodoList.find({ user: loggedUser._id });
+    const lists = await List.find({ user: loggedUser._id });
 
     return res.status(200).json(lists);
   } catch (error) {
@@ -78,15 +81,44 @@ app.get('/lists/:email', async (req, res) => {
   }
 });
 
-app.put('/list/make', (req, res) => {
-  console.log('req: ', req.body);
+app.post('/list/make', (req, res) => {
+  const { title, category, user } = req.body;
+
+  const newList = new List({
+    listTitle: title,
+    category,
+    user,
+  });
+
+  newList
+    .save()
+    .then((createListResponse) => {
+      console.log('List created successfully.');
+      res.status(201).json(createListResponse.data);
+    })
+    .catch((err) => res.status(500).json(err));
 });
 
-app.get('/user/:email', (req, res) => {
-  User.findOne({ email: req.params.email }).then((user) => {
-    res.status(200).json(user);
-  });
+// TODO: refactor adding todo to list
+app.put('/list/:id/update', (req, res) => {
+  List.findOne({ _id: req.params.id })
+    .then((list) => {
+      list.todos.push({
+        ...req.body,
+        comments: [],
+        complete: false,
+      });
+
+      list.save().then((response) => {
+        console.log('we saved the list!');
+        res.status(204).json(response);
+      });
+    })
+    .catch((err) => res.status(400).json(err));
 });
+
+app.use('/lists', lists);
+app.use('/users', users);
 
 app.listen(port, (req, res) => {
   console.log(`Server running at port ${port}`);

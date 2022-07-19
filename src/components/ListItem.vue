@@ -5,7 +5,7 @@
       {{ currentTodoList.title }}
       <small class="honeydew-list_item-due" v-if="currentTodoList.dueDate">Due: {{ currentTodoList.dueDate }}</small>
     </span>
-    <button @click="openActions">
+    <button class="honeydew-list_action-button" @click="openActions">
       <font-awesome-icon icon="fa-solid fa-ellipsis" />
     </button>
     <ul v-show="actionsOpened" class="honeydew-list_item-menu">
@@ -94,6 +94,7 @@ function openActions() {
   button {
     background-color: rgba(0, 0, 0, 0);
     border: none;
+    box-shadow: none;
     color: #333;
     font-size: 24px;
   }
