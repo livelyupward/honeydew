@@ -1,7 +1,11 @@
 <template>
   <Suspense>
-    <main class="honeydew-main" v-if="store.getUserFromDb">
-      <TodoList v-for="(list, index) in store.getUserFromDb" :list="{ ...list, listIndex: index }" :key="list.id" />
+    <main class="honeydew-main" v-if="store.getUserListsFromDb">
+      <TodoList
+        v-for="listAndTodos in store.getUserListsFromDb"
+        :listAndTodos="listAndTodos"
+        :key="listAndTodos.list.id"
+      />
     </main>
     <main class="honeydew-main" v-else>
       <p class="honeydew-main_no-lists" v-if="!creatingList">No lists found.</p>
@@ -51,7 +55,7 @@ function submitNewList() {
       user: store.userAuthInfo._id,
     })
     .then((response) => {
-      retrieveUserLists();
+      setUserLists();
       creatingList.value = false;
       title.value = '';
       category.value = '';
@@ -59,19 +63,20 @@ function submitNewList() {
     });
 }
 
-function retrieveUserLists() {
-  axios
-    .get(`http://localhost:4000/lists/${store.userAuthInfo.email}`)
-    .then((response) => {
-      store.setUserLists(response.data);
+function setUserLists() {
+  !store.getUserListsFromDb &&
+    axios
+      .get(`http://localhost:4000/lists/${store.userAuthInfo._id}/todos`)
+      .then((response) => {
+        store.setUserLists(response.data);
 
-      return response.data;
-    })
-    .catch((err) => console.log('Error:: ', err));
+        return response.data;
+      })
+      .catch((err) => console.log('Error:: ', err));
 }
 
 onMounted(() => {
-  retrieveUserLists();
+  setUserLists();
 });
 </script>
 

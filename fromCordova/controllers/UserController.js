@@ -16,7 +16,7 @@ module.exports = {
   singleUser: (req, res) => {
     User.findOne({ email: req.params.email })
       .then((user) => {
-        console.log('USER:: ', user);
+        res.status(200).json(user);
       })
       .catch((error) => {
         res.status(400).json(error);

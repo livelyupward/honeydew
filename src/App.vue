@@ -17,6 +17,8 @@ import SignIn from '@/components/SignIn';
 import { decodeCredential } from 'vue3-google-login';
 import axios from 'axios';
 
+let debug = false;
+
 const title = ref('');
 const store = mainStore();
 
@@ -24,10 +26,19 @@ onMounted(() => {
   const userAuthCookie = window.localStorage.getItem('honeydew_auth_token');
   if (userAuthCookie) {
     const userInfo = decodeCredential(userAuthCookie);
-    axios.get(`http://localhost:4000/users/${userInfo.email}`).then((response) => {
-      store.loginUser({ ...userInfo, ...response.data });
-    });
-    console.log('UI:: ', userInfo);
+    axios
+      .get(`http://localhost:4000/users/${userInfo.email}`)
+      .then((userResponse) => {
+        debug && console.log('user find res:: ', userResponse.data);
+        axios.get(`http://localhost:4000/lists/${userResponse.data._id}/todos`).then((response) => {
+          debug && console.log('user lists res:: ', response.data);
+          store.loginUser({ ...userInfo, ...userResponse.data });
+          store.setUserLists(response.data);
+        });
+      })
+      .catch((userError) => {
+        debug && console.log('axios userError:: ', userError);
+      });
   }
 });
 </script>

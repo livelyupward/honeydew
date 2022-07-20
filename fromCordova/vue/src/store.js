@@ -37,7 +37,7 @@ export const mainStore = defineStore('main', {
   },
 
   getters: {
-    getUserFromDb(state) {
+    getUserListsFromDb(state) {
       return state.todoLists;
     },
     isCreatingItem(state) {

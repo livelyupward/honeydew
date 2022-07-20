@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TodoSchema = new Schema({
-  title: {
+  text: {
     type: String,
     required: true,
   },
@@ -20,6 +20,10 @@ const TodoSchema = new Schema({
     type: String,
     required: false,
     default: null,
+  },
+  list: {
+    type: Schema.Types.ObjectId,
+    ref: 'lists',
   },
 });
 

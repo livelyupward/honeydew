@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 require('../models/List');
+require('../models/Todo');
 const List = mongoose.model('lists');
+const Todo = mongoose.model('todos');
 
 module.exports = {
   allUserLists: (req, res) => {
@@ -13,8 +15,28 @@ module.exports = {
       });
   },
 
+  allListsAndTodos: async (req, res) => {
+    List.find({ user: req.params.id })
+      .then((lists) => {
+        let todoQueries = [];
+
+        lists.forEach((list) => {
+          todoQueries.push(
+            Todo.find({ list: list._id }).then((todos) => {
+              return { list, todos };
+            })
+          );
+        });
+
+        return Promise.all(todoQueries);
+      })
+      .then((listOfJobs) => {
+        res.json(listOfJobs);
+      });
+  },
+
   singleUserList: (req, res) => {
-    List.find({ id: req.params.id })
+    List.findOne({ id: req.params.id })
       .then((list) => {
         res.status(200).json(list);
       })

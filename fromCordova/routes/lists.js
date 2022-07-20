@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const ListController = require('../controllers/ListController');
+const { allUserLists, allListsAndTodos, singleUserList } = require('../controllers/ListController');
 
-router.get('/', ListController.allUserLists);
-router.get('/:id', ListController.singleUserList);
+router.get('/:id', allUserLists);
+router.get('/:id/todos', allListsAndTodos);
+router.get('/single/:id', singleUserList);
 
 module.exports = router;

@@ -1,29 +1,31 @@
 <template>
+  <p>Create new list item</p>
   <form @submit.prevent="addListItem()" class="honeydew-list_create-form">
-    <p>Create new list item</p>
     <div class="honeydew-list_form-group">
-      <label for="create-text">Item Text</label>
-      <input id="create-text" v-model="todoTitle" type="text" required />
+      <label class="honeydew-paper" for="create-text">Item Text</label>
+      <input class="honeydew-paper" id="create-text" v-model="todoTitle" type="text" required />
     </div>
     <div class="honeydew-list_form-group">
       <label for="create-text">Due Date</label>
-      <datepicker v-model="todoDueDate" :clearable="true" />
+      <datepicker class="honeydew-list_form-datepicker" v-model="todoDueDate" :clearable="true" />
     </div>
     <div class="honeydew-button_group">
-      <button>Save New Item</button>
-      <button @click.prevent="cancelCreate">Cancel</button>
+      <button class="honeydew-button confirm">Save New Item</button>
+    </div>
+    <div class="honeydew-button_group">
+      <button class="honeydew-button cancel" @click.prevent="cancelCreate">Cancel</button>
     </div>
   </form>
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, defineProps } from 'vue';
 import { mainStore } from '@/store';
 import Datepicker from 'vue3-datepicker';
 import axios from 'axios';
 
 const props = defineProps({
-  list: Object,
+  listAndTodos: Object,
 });
 
 const todoTitle = ref('');
@@ -34,8 +36,8 @@ const store = mainStore();
 function addListItem() {
   const dateFormatted = todoDueDate.value.toLocaleDateString();
 
-  axios // TODO: refactor adding todo via api, change this to add to /todo instead of /lists
-    .put(`http://localhost:4000/list/${props.list._id}/update`, {
+  axios
+    .post(`http://localhost:4000/todos/${props.listAndTodos.list._id}/update`, {
       title: todoTitle.value,
       dueDate: dateFormatted,
     })
@@ -57,31 +59,46 @@ function addListItem() {
 function cancelCreate() {
   store.cancelCreateItem();
 }
-
-onMounted(() => {
-  console.log('Datepicker initialized');
-});
 </script>
 
 <style lang="scss" scoped>
 .honeydew-list_create-form {
   display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto auto auto;
+  grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+  grid-template-rows: auto auto;
+  grid-gap: 10px;
   margin: 15px 0;
+  text-align: left;
 
-  label {
-    display: block;
-    text-align: left;
-  }
-
-  input[type='text'] {
-    background-color: rgba(0, 0, 0, 0);
-    border: 1px solid #333;
-    border-radius: 5px;
+  input {
+    box-sizing: border-box;
     color: #333;
-    font-size: 18px;
     padding: 4px;
+    width: 100%;
   }
+
+  button {
+    width: 100%;
+
+    &.cancel {
+      background-color: #333;
+      border-color: #333;
+      color: #fff;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.honeydew-list_form-datepicker {
+  box-sizing: border-box;
+  width: 100%;
+}
+.v3dp__clearable {
+  display: inline;
+  left: auto;
+  position: absolute;
+  right: 8px;
+  cursor: pointer;
 }
 </style>

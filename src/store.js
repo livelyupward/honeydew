@@ -11,7 +11,7 @@ export const mainStore = defineStore('main', {
   },
 
   getters: {
-    getUserFromDb(state) {
+    getUserListsFromDb(state) {
       return state.userData;
     },
     isCreatingItem(state) {

@@ -11,7 +11,7 @@ import TodoList from './TodoList.vue';
 import axios from 'axios';
 
 const store = mainStore();
-const todoLists = reactive(store.getUserFromDb);
+const todoLists = reactive(store.getUserListsFromDb);
 
 onMounted(() => {
   console.log('App initialized');

@@ -1,20 +1,20 @@
 <template>
-  <section class="honeydew-list" v-if="list">
-    <ListTitle :list-title="list.listTitle" />
+  <section class="honeydew-list" v-if="listAndTodos">
+    <ListTitle :list-title="listAndTodos.list.listTitle" />
     <ul class="honeydew-list_content">
-      <ListItem v-for="(todo, index) in list.todos" :todo="todo" :index="index" :key="todo.id" />
-      <CreateListItem v-if="creatingItem" :list="list" />
-      <button class="honeydew-list_create" v-if="!creatingItem" @click="activateCreatItem">
-        <font-awesome-icon icon="fa-solid fa-plus" />
-        <span class="honeydew-list_add">Add Item</span>
-      </button>
+      <ListItem v-for="todo in listAndTodos.todos" :todo="todo" :key="todo.id" />
     </ul>
+    <CreateListItem v-if="creatingItem" :list-and-todos="listAndTodos" />
+    <button class="honeydew-list_create" v-if="!creatingItem" @click="activateCreatItem">
+      <font-awesome-icon icon="fa-solid fa-plus" />
+      <span class="honeydew-list_add">Add Item</span>
+    </button>
   </section>
 </template>
 
 <script setup>
 import { computed, defineProps } from 'vue';
-import { mainStore } from '../store';
+import { mainStore } from '@/store';
 import ListTitle from './ListTitle.vue';
 import ListItem from './ListItem.vue';
 import CreateListItem from './CreateListItem.vue';
@@ -22,7 +22,7 @@ import CreateListItem from './CreateListItem.vue';
 const store = mainStore();
 
 defineProps({
-  list: Object,
+  listAndTodos: Object,
 });
 
 const creatingItem = computed(() => store.isCreatingItem);
@@ -40,6 +40,7 @@ function activateCreatItem() {
 }
 
 .honeydew-list {
+  background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.13);
@@ -49,6 +50,14 @@ function activateCreatItem() {
 
   &_content {
     margin-bottom: 0;
+  }
+
+  .honeydew-list_create-form {
+    .honeydew-list_form-group {
+      input {
+        width: 100%;
+      }
+    }
   }
 }
 

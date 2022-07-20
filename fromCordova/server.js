@@ -69,17 +69,17 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.get('/lists/:email', async (req, res) => {
-  try {
-    const email = req.params.email;
-    const loggedUser = await User.findOne({ email });
-    const lists = await List.find({ user: loggedUser._id });
-
-    return res.status(200).json(lists);
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
+// app.get('/lists/:email', async (req, res) => {
+//   try {
+//     const email = req.params.email;
+//     const loggedUser = await User.findOne({ email });
+//     const lists = await List.find({ user: loggedUser._id });
+//
+//     return res.status(200).json(lists);
+//   } catch (error) {
+//     res.status(500).json({ error });
+//   }
+// });
 
 app.post('/list/make', (req, res) => {
   const { title, category, user } = req.body;
