@@ -1,0 +1,7 @@
+{
+  "name": "ts-honeydew",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
