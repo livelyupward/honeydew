@@ -1,11 +1,20 @@
 <template>
   <section class="honeydew-list" v-if="listAndTodos">
     <ListTitle :list-title="listAndTodos.list.listTitle" />
-    <ul class="honeydew-list_content">
-      <ListItem v-for="todo in listAndTodos.todos" :todo="todo" :key="todo.id" />
+    <ul v-if="listAndTodos.todos.length" class="honeydew-list_content">
+      <ListItem v-for="todo in listAndTodos.todos" :todo="todo" :key="todo.id" @open-actions="activateActions" />
+      <aside
+        v-if="actionsActivated"
+        class="honeydew-item_actions"
+        :style="`top: ${menuStyles.top}px; left: ${menuStyles.left}px`"
+      >
+        <button>Edit</button>
+        <button>Delete</button>
+      </aside>
     </ul>
+    <p v-else>No todos yet.</p>
     <CreateListItem v-if="creatingItem" :list-and-todos="listAndTodos" />
-    <button class="honeydew-list_create" v-if="!creatingItem" @click="activateCreatItem">
+    <button class="honeydew-list_create" v-if="!creatingItem" @click="activateCreateItem">
       <font-awesome-icon icon="fa-solid fa-plus" />
       <span class="honeydew-list_add">Add Item</span>
     </button>
@@ -13,21 +22,38 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue';
+import { ref, computed, defineProps, defineEmits } from 'vue';
 import { mainStore } from '@/store';
 import ListTitle from './ListTitle.vue';
 import ListItem from './ListItem.vue';
 import CreateListItem from './CreateListItem.vue';
 
 const store = mainStore();
+const actionsActivated = ref(false);
+
+defineEmits(['openActions']);
 
 defineProps({
   listAndTodos: Object,
 });
 
+const menuStyles = ref({
+  top: '0px',
+  left: '0px',
+});
+
+function activateActions(target) {
+  const listItemElement = target.$el;
+  const listItemPosition = listItemElement.getBoundingClientRect();
+
+  menuStyles.value.top = listItemPosition.top;
+  menuStyles.value.left = listItemPosition.left;
+  actionsActivated.value = true;
+}
+
 const creatingItem = computed(() => store.isCreatingItem);
 
-function activateCreatItem() {
+function activateCreateItem() {
   store.activateCreateItem();
 }
 </script>
@@ -50,6 +76,7 @@ function activateCreatItem() {
 
   &_content {
     margin-bottom: 0;
+    position: relative;
   }
 
   .honeydew-list_create-form {
@@ -74,5 +101,9 @@ function activateCreatItem() {
   svg {
     margin-right: 5px;
   }
+}
+
+.honeydew-item_actions {
+  position: absolute;
 }
 </style>

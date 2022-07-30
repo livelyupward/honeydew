@@ -1,34 +1,42 @@
 <template>
   <li class="honeydew-list_item">
-    <input v-model="localTodo.complete" class="honeydew-list_item-checkbox" type="checkbox" />
-    <span class="honeydew-list_item-text" :class="localTodo.complete === true ? 'completed' : null">
+    <input
+      @change="submitTodoStatus"
+      v-model="localTodo.complete"
+      class="honeydew-list_item-checkbox"
+      type="checkbox"
+    />
+    <span
+      class="honeydew-list_item-text"
+      :class="localTodo.complete === true ? 'completed' : null"
+    >
       {{ localTodo.text }}
-      <small class="honeydew-list_item-due" v-if="localTodo.dueDate">Due: {{ localTodo.dueDate }}</small>
+      <small class="honeydew-list_item-due" v-if="localTodo.dueDate"
+        >Due: {{ localTodo.dueDate }}</small
+      >
     </span>
-    <button class="honeydew-list_action-button" @click="openActions">
-      <font-awesome-icon icon="fa-solid fa-ellipsis" />
-    </button>
-    <ul v-show="actionsOpened" class="honeydew-list_item-menu">
-      <li class="honeydew-list_item-menu_action">Edit</li>
-      <li class="honeydew-list_item-menu_action">Delete</li>
-    </ul>
   </li>
 </template>
 
-<script setup>
-import { ref, defineProps, defineEmits } from 'vue';
-
-defineEmits(['closeActions']);
+<script setup lang="ts">
+import { ref, defineProps } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   todo: Object,
 });
 
-const localTodo = ref(props.todo);
-const actionsOpened = ref(false);
+const localTodo = ref<object>(props.todo);
 
-function openActions() {
-  actionsOpened.value = !actionsOpened.value;
+function submitTodoStatus(): void {
+  axios
+    .put(
+      `http://localhost:4000/todos/${props.todo._id}/update`,
+      localTodo.value
+    )
+    .then((todoResponse) => {
+      console.log("todo update res:: ", todoResponse);
+    });
 }
 </script>
 

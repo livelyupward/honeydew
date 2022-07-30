@@ -34,25 +34,23 @@ const todoDueDate = ref(new Date());
 const store = mainStore();
 
 function addListItem() {
-  const dateFormatted = todoDueDate.value.toLocaleDateString();
+  const dateFormatted = todoDueDate.value ? todoDueDate.value.toLocaleDateString() : null;
 
   axios
-    .post(`http://localhost:4000/todos/${props.listAndTodos.list._id}/update`, {
-      title: todoTitle.value,
+    .post(`http://localhost:4000/todos/${props.listAndTodos.list._id}`, {
+      text: todoTitle.value,
       dueDate: dateFormatted,
     })
-    .then((response) => {
-      store.addTodoItem({
-        title: todoTitle.value,
-        dueDate: dateFormatted,
-        comments: [],
-        complete: false,
-        listIndex: props.list.listIndex,
-      });
-      todoTitle.value = '';
-      todoDueDate.value = new Date();
-      store.deactivateCreateItem();
-      console.log('RES: ', response);
+    .then(() => {
+      axios
+        .get(`http://localhost:4000/lists/${store.userAuthInfo._id}/todos`)
+        .then((response) => {
+          store.setUserLists(response.data);
+          todoTitle.value = '';
+          todoDueDate.value = new Date();
+          store.deactivateCreateItem();
+        })
+        .catch((err) => console.log('Error:: ', err));
     });
 }
 
