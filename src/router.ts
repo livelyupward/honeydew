@@ -6,7 +6,7 @@ const routes = [
     component: () => import('./views/Home.vue'),
   },
   {
-    path: '/components',
+    path: '/fragments',
     component: () => import('./views/ComponentDisplay.vue'),
   },
 ];

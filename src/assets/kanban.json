@@ -1,0 +1,20 @@
+{
+  "title": "My kanban board",
+  "items": {
+    "Todo": [
+      {
+        "content": "Hello there"
+      }
+    ],
+    "Working": [
+      {
+        "content": "Wokring on it!"
+      }
+    ],
+    "Done": [
+      {
+        "content": "All done"
+      }
+    ]
+  }
+}

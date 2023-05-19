@@ -1,7 +1,11 @@
 <template>
-  <div class="checkable-item" :class="checked ? 'checked' : ''" :data-type="props.type ? `${props.type}` : ''">
-    <div class="checkable_checkmark-container">
-      <span class="checkmark" @click="activateCheckmark">
+  <div
+    class="todo-list_list-item_checkable-item"
+    :class="checked ? 'checked' : ''"
+    :data-type="props.type ? `${props.type}` : ''"
+  >
+    <div class="todo-list_list-item_checkable_checkmark-container">
+      <span class="todo-list_list-item_checkmark" @click="activateCheckmark">
         <svg
           id="checkmark"
           xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +29,10 @@
         </svg>
       </span>
     </div>
-    <div class="checkable_content-container">
-      <slot></slot>
+    <div class="todo-list_list-item_checkable_content-container">
+      <p class="todo-list_list-item_content">
+        <slot></slot>
+      </p>
     </div>
   </div>
 </template>
@@ -48,13 +54,13 @@ const activateCheckmark = () => {
 </script>
 
 <style lang="scss" scoped>
-.checkable-item {
+.todo-list_list-item_checkable-item {
   align-items: center;
   display: flex;
   width: 100%;
 
   &.checked {
-    span.checkmark {
+    span.todo-list_list-item_checkmark {
       background-color: #66c2a5;
       border: 1px solid #66c2a5;
       transition: all 250ms ease-in;
@@ -63,27 +69,32 @@ const activateCheckmark = () => {
       }
     }
 
-    .checkable_content-container {
-      color: #aaa;
+    .todo-list_list-item_checkable_content-container {
+      p {
+        color: #aaa;
+      }
     }
 
     &[data-type='strike'] {
-      .checkable_content-container {
-        text-decoration: line-through;
+      .todo-list_list-item_checkable_content-container {
+        p {
+          text-decoration: line-through;
+        }
       }
     }
   }
 
-  .checkable_checkmark-container {
+  .todo-list_list-item_checkable_checkmark-container {
     flex: 0 0 auto;
     padding-right: 0.875rem;
   }
 
-  .checkable_content-container {
+  .todo-list_list-item_checkable_content-container {
     flex: 1 1 auto;
   }
 }
-span.checkmark {
+
+span.todo-list_list-item_checkmark {
   align-items: center;
   border: 1px dashed #333;
   border-radius: 50%;
@@ -94,9 +105,14 @@ span.checkmark {
   transition: all 250ms ease-in;
   width: 20px;
 }
+
 svg {
   height: 10px;
   stroke: #333;
   width: 10px;
+}
+
+.todo-list_list-item_content {
+  margin: 0;
 }
 </style>

@@ -2,13 +2,10 @@ import { defineStore } from 'pinia';
 
 export const mainStore = defineStore('main', {
   state: () => {
-    return {
-      message: '',
-    };
+    return {};
   },
+  getters: {},
   actions: {
-    sayHello() {
-      return 'Hello!';
-    },
+    getDataForFragment(): void {},
   },
 });

@@ -1,0 +1,46 @@
+<template>
+  <div class="todo-list_container">
+    <p class="todo-list_title">{{ props.content.title }}</p>
+    <ul class="todo-list_list">
+      <li v-for="(listItem, index) in props.content.items" class="todo-list_list-item" :key="listItem">
+        <TodoCheckable :key="index">
+          {{ listItem.content }}
+        </TodoCheckable>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script setup lang="ts">
+import TodoCheckable from './TodoCheckable.vue';
+
+const props = defineProps({
+  content: Object,
+});
+</script>
+
+<style lang="scss" scoped>
+.todo-list_list {
+  padding: 0;
+  margin: 10px 0;
+
+  .todo-list_list-item {
+    border-bottom: 1px solid #e1e1e1;
+    margin: 10px 0 0;
+    padding: 0 0 10px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .todo-list_list-item_content {
+      margin: 0;
+    }
+  }
+}
+</style>

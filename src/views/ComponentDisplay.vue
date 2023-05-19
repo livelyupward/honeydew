@@ -106,8 +106,8 @@
 </template>
 
 <script setup>
-import Checkable from '../components/Checkable.vue';
-import Card from '../components/Card.vue';
+import Checkable from '../fragments/Todo/TodoCheckable.vue';
+import Card from '../fragments/Card.vue';
 </script>
 
 <style scoped></style>

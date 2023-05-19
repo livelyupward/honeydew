@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Checkable from './components/Checkable.vue';
-import Card from './components/Card.vue';
+import Checkable from './fragments/Todo/TodoCheckable.vue';
+import Card from './fragments/Card.vue';
 
 const good = ref(false);
 </script>
