@@ -1,20 +1,44 @@
-{
-  "title": "My kanban board",
-  "items": {
-    "Todo": [
+[
+  {
+    "type": "todo",
+    "title": "My first list",
+    "items": [
       {
-        "content": "Hello there"
-      }
-    ],
-    "Working": [
+        "complete": false,
+        "content": "hello friends",
+        "type": "strikeable"
+      },
       {
-        "content": "Wokring on it!"
-      }
-    ],
-    "Done": [
+        "complete": false,
+        "content": "my second list item",
+        "type": "strikeable"
+      },
       {
-        "content": "All done"
+        "complete": false,
+        "content": "another list item",
+        "type": "strikeable"
       }
     ]
+  },
+  {
+    "type": "kanban",
+    "title": "My kanban board",
+    "items": {
+      "Todo": [
+        {
+          "content": "Hello there"
+        }
+      ],
+      "Working": [
+        {
+          "content": "Wokring on it!"
+        }
+      ],
+      "Done": [
+        {
+          "content": "All done"
+        }
+      ]
+    }
   }
-}
+]

@@ -34,16 +34,17 @@ import json from '../../assets/kanban.json';
 
 const loading = ref(true);
 
+const props = defineProps({
+  content: Object,
+});
+
 const draggedItem = ref({});
 const draggedItemHMTL = ref('');
 const draggedStartingStatus = ref(null);
 const draggedEndingStatus = ref(null);
 const kanban = ref({
-  title: '',
-  items: {},
+  ...props.content,
 });
-
-kanban.value = json;
 
 function dragStart(contentKey, event) {
   console.log('dragged item html: ', draggedItemHMTL.value);
@@ -79,11 +80,6 @@ async function droppedHandler(event) {
 
 function cancelDefault(event) {
   event.preventDefault();
-}
-
-interface KanbanContent {
-  title: string;
-  items: object[];
 }
 </script>
 

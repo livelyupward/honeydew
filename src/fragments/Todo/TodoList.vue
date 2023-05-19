@@ -8,15 +8,33 @@
         </TodoCheckable>
       </li>
     </ul>
+    <form @submit.prevent="addTodoItem">
+      <input type="text" v-model="todoContent" />
+      <button>Add Item</button>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import TodoCheckable from './TodoCheckable.vue';
 
+const todoContent = ref('');
 const props = defineProps({
   content: Object,
 });
+
+const fragmentData = ref({ ...props.content });
+
+function addTodoItem() {
+  fragmentData.value.items.push({
+    complete: false,
+    content: todoContent.value,
+    type: 'strikeable',
+  });
+
+  todoContent.value = '';
+}
 </script>
 
 <style lang="scss" scoped>

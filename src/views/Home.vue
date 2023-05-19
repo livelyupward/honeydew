@@ -3,49 +3,22 @@
     <Sidebar />
     <main class="honeydew_main-container">
       <h1>We are testing here.</h1>
-      <TodoList :content="{ ...list }" />
-      <hr />
-      <KanbanBoard :content="kanban" />
-      <hr />
-      <AnyNote />
+      <component
+        v-for="contentItem in json"
+        :is="fragmentMap[contentItem.type]"
+        :content="{ ...contentItem }"
+      ></component>
     </main>
   </div>
 </template>
 
 <script setup>
 import Sidebar from '../fragments/Sidebar/Sidebar.vue';
-import TodoList from '../fragments/Todo/TodoList.vue';
-import KanbanBoard from '../fragments/Kanban/KanbanBoard.vue';
-import AnyNote from '../fragments/note/AnyNote.vue';
-import { mainStore } from '../store.ts';
-import { storeToRefs } from 'pinia';
-
-const store = mainStore();
-const { kanban } = storeToRefs(store);
-
-const list = {
-  title: 'My first list',
-  items: [
-    {
-      value: false,
-      content: 'hello friends',
-      type: 'strikeable',
-    },
-    {
-      value: false,
-      content: 'my second list item',
-      type: 'strikeable',
-    },
-    {
-      value: false,
-      content: 'another list item',
-      type: 'strikeable',
-    },
-  ],
-};
+import { fragmentMap } from '../fragmentMap.js';
+import json from '../assets/kanban.json';
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   min-height: 100vh;
 }
