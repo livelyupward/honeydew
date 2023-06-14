@@ -1,28 +1,31 @@
 <template>
   <aside>
-    <Transition name="slide-up">
-      <div class="honeydew-sidebar_sub-links" v-if="selectedLink !== ''">
-        <div class="honeydew-sidebar_sub-links_container">
-          <p>Sprints</p>
-          <ul class="honeydew-sidebar_sub-links_list">
-            <li class="honeydew-sidebar_sub-link">4/17/23</li>
-            <li class="honeydew-sidebar_sub-link">5/1/23</li>
-            <li class="honeydew-sidebar_sub-link">5/15/23</li>
-          </ul>
-        </div>
+    <header class="honeydew-sidebar_sub-links honeydew-sidebar_container">
+      <div class="honeydew-sidebar_sub-links_container">
+        <SidebarHeading> Sprints </SidebarHeading>
+        <ul class="honeydew-sidebar_sub-links_list">
+          <li class="honeydew-sidebar_sub-link">4/17/23</li>
+          <li class="honeydew-sidebar_sub-link">5/1/23</li>
+          <li class="honeydew-sidebar_sub-link">5/15/23</li>
+        </ul>
       </div>
-    </Transition>
-    <div class="honeydew-sidebar_links">
+    </header>
+    <header class="honeydew-sidebar_quick-items">
+      <ul class="honeydew-sidebar_quick-items_list">
+        <li class="honeydew-sidebar_quick-items_list-link"></li>
+      </ul>
+    </header>
+    <header class="honeydew-sidebar_links honeydew-sidebar_container">
       <div class="honeydew-sidebar_spaces">
-        <p>Spaces</p>
+        <SidebarHeading> Spaces </SidebarHeading>
         <ul class="honeydew-sidebar_links-list">
           <li class="honeydew-sidebar_link" @click="selectedLink = 'sprints'">Sprints</li>
           <li class="honeydew-sidebar_link" @click="selectedLink = 'reports'">Reports</li>
           <li class="honeydew-sidebar_link" @click="selectedLink = 'cqr'">CQR</li>
         </ul>
       </div>
-    </div>
-    <div class="honeydew-sidebar_heading">
+    </header>
+    <header class="honeydew-sidebar_heading honeydew-sidebar_container">
       <div class="honeydew-sidebar_user-container">
         <img
           class="honeydew-sidebar_user-avatar"
@@ -31,12 +34,13 @@
         />
         <span class="honeydew-sidebar_user-label">Dave</span>
       </div>
-    </div>
+    </header>
   </aside>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import SidebarHeading from './SidebarHeading.vue';
 
 const selectedLink = ref('');
 </script>
@@ -45,9 +49,21 @@ const selectedLink = ref('');
 aside {
   align-items: flex-start;
   background-color: $transparent;
-  border-right: 1px solid #dddddd;
   display: flex;
   flex-direction: column;
+
+  .honeydew-sidebar_container {
+    &:not(:last-of-type) {
+      margin-bottom: 3rem;
+    }
+  }
+}
+
+header {
+  ul {
+    margin-bottom: 1rem;
+    padding: 0;
+  }
 }
 
 .honeydew-sidebar_heading {
@@ -66,8 +82,8 @@ aside {
   }
 }
 
-.honeydew-sidebar_sub-links ~ .honeydew-sidebar_links {
-  border-top: 1px solid #ddd;
+.honeydew-sidebar_spaces-header {
+  font-weight: 700;
 }
 
 /* rules that target nested elements */

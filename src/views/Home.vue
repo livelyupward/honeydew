@@ -2,20 +2,17 @@
   <div id="app-container">
     <Sidebar />
     <main class="honeydew_main-container">
-      <h1>We are testing here.</h1>
-      <component
-        v-for="contentItem in json"
-        :is="fragmentMap[contentItem.type]"
-        :content="{ ...contentItem }"
-      ></component>
+      <header class="honeydew-homepage_header">
+        <h1 class="honeydew-homepage_header-heading">Honeydew</h1>
+      </header>
+      <InteractiveStage />
     </main>
   </div>
 </template>
 
 <script setup>
 import Sidebar from '../fragments/Sidebar/Sidebar.vue';
-import { fragmentMap } from '../fragmentMap.js';
-import json from '../assets/kanban.json';
+import InteractiveStage from '../fragments/Stage/InteractiveStage.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -32,5 +29,10 @@ import json from '../assets/kanban.json';
 main.honeydew_main-container {
   overflow-y: auto;
   padding: 1.25rem;
+}
+
+.honeydew-homepage_header-heading {
+  font-size: 2.125rem;
+  font-weight: 900;
 }
 </style>

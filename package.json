@@ -10,6 +10,15 @@
     "go": "concurrently \"pnpm run dev\" \"nodemon server.js\""
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.27.0",
+    "@editorjs/header": "^2.7.0",
+    "@editorjs/list": "^1.8.0",
+    "@editorjs/paragraph": "^2.9.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "body-parser": "^1.20.2",
     "chalk": "^5.2.0",
     "cors": "^2.8.5",
@@ -21,6 +30,7 @@
     "sequelize": "^6.31.0",
     "vue": "^3.2.47",
     "vue-router": "4",
+    "vue3-popper": "^1.5.0",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

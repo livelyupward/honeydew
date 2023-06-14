@@ -17,10 +17,10 @@ const good = ref(false);
 Card component
  */
 .honeydew-card {
-  border: 1px solid lighten(#4c6e91, 25%);
-  margin: 0.875rem;
   @include shadow-sm;
   @include main-border;
+  border: 1px solid lighten(#4c6e91, 25%);
+  margin: 0.875rem;
 
   .honeydew-card_header {
     background-color: $color3;

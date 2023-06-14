@@ -1,15 +1,10 @@
 <template>
-  <div
-    class="todo-list_list-item_checkable-item"
-    :class="checked ? 'checked' : ''"
-    :data-type="props.type ? `${props.type}` : ''"
-  >
+  <div class="todo-list_list-item_checkable-item" :class="checked ? 'checked' : ''">
     <div class="todo-list_list-item_checkable_checkmark-container">
       <span class="todo-list_list-item_checkmark" @click="activateCheckmark">
         <svg
           id="checkmark"
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
           viewBox="0 0 300 300"
           shape-rendering="geometricPrecision"
           text-rendering="geometricPrecision"
@@ -46,7 +41,6 @@ const props = defineProps({
 });
 
 const checked = ref(props.value || false);
-const type = ref(props.type);
 
 const activateCheckmark = () => {
   checked.value = !checked.value;
@@ -65,21 +59,14 @@ const activateCheckmark = () => {
       border: 1px solid #66c2a5;
       transition: all 250ms ease-in;
       svg {
-        stroke: #fff;
+        stroke: #333;
       }
     }
 
     .todo-list_list-item_checkable_content-container {
       p {
         color: #aaa;
-      }
-    }
-
-    &[data-type='strike'] {
-      .todo-list_list-item_checkable_content-container {
-        p {
-          text-decoration: line-through;
-        }
+        text-decoration: line-through;
       }
     }
   }
@@ -108,7 +95,7 @@ span.todo-list_list-item_checkmark {
 
 svg {
   height: 10px;
-  stroke: #333;
+  stroke: #666;
   width: 10px;
 }
 

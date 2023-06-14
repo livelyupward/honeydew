@@ -30,8 +30,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import json from '../../assets/kanban.json';
-
 const loading = ref(true);
 
 const props = defineProps({
@@ -85,7 +83,7 @@ function cancelDefault(event) {
 
 <style lang="scss" scoped>
 .kanban-board_container {
-  background-color: #ffffff;
+  background-color: $transparent;
 
   .kanban-board_stage {
     display: flex;
