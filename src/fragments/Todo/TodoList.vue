@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-list_container">
+  <div class="todo-list_container item-frame">
     <p class="todo-list_title">{{ props.content.title }}</p>
     <ul class="todo-list_list">
       <li v-for="(listItem, index) in props.content.items" class="todo-list_list-item" :key="listItem">

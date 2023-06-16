@@ -1,6 +1,6 @@
 <template>
   <quill-editor
-    class="honeydew_note-editor"
+    class="honeydew_note-editor item-frame"
     :toolbar="toolbars"
     theme="snow"
     content-type="delta"
@@ -9,13 +9,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
-const noteContent = ref('');
+const noteContent: Ref<string> = ref('');
 
-const toolbars = [
+const toolbars: any = [
   ['bold', 'italic', 'underline', 'strike'],
   ['blockquote', 'code-block'],
   [{ align: [] }],

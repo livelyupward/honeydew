@@ -1,6 +1,6 @@
 <template>
-  <div class="kanban-board_container">
-    <p class="kanban-board_title">{{ kanban.title }}</p>
+  <div class="kanban-board_container item-frame">
+    <p class="kanban-board_title">{{ kanban.text }}</p>
     <div class="kanban-board_stage">
       <div
         v-for="(boardItem, boardKey) in kanban.items"
@@ -29,22 +29,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const loading = ref(true);
+import { Ref, ref } from 'vue';
+import { type HoneydewItem } from '../../store.ts';
+const loading: Ref<boolean> = ref(true);
 
-const props = defineProps({
-  content: Object,
-});
+const props = defineProps<{
+  content: HoneydewItem,
+}>();
 
 const draggedItem = ref({});
-const draggedItemHMTL = ref('');
+const draggedItemHMTL: Ref<string> = ref('');
 const draggedStartingStatus = ref(null);
-const draggedEndingStatus = ref(null);
+const draggedEndingStatus: Ref<string | null> = ref(null);
 const kanban = ref({
   ...props.content,
 });
 
-function dragStart(contentKey, event) {
+function dragStart(contentKey, event): void {
   console.log('dragged item html: ', draggedItemHMTL.value);
   if (Object.keys(draggedItemHMTL.value).length <= 0) {
     draggedStartingStatus.value = contentKey;
@@ -55,7 +56,7 @@ function dragStart(contentKey, event) {
   }
 }
 
-async function droppedHandler(event) {
+async function droppedHandler(event): Promise<void> {
   draggedEndingStatus.value = event.target.dataset.status;
 
   if (draggedStartingStatus.value === null) throw Error('Starting status is null. Something has gone wrong.');
@@ -76,7 +77,7 @@ async function droppedHandler(event) {
   draggedEndingStatus.value = null;
 }
 
-function cancelDefault(event) {
+function cancelDefault(event): void {
   event.preventDefault();
 }
 </script>

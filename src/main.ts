@@ -6,9 +6,9 @@ import { createPinia } from 'pinia';
 import Popper from 'vue3-popper';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faGripLines, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlus);
+library.add(faPlus, faGripLines, faLayerGroup);
 
 const pinia = createPinia();
 
