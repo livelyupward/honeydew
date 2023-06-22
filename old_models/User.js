@@ -2,21 +2,15 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   return sequelize.define(
-    'board',
+    'user',
     {
-      board_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      title: {
+      username: {
         type: DataTypes.STRING,
       },
-      description: {
+      role: {
         type: DataTypes.STRING,
-        allowNull: true,
       },
-      type: {
+      email: {
         type: DataTypes.STRING,
       },
     },

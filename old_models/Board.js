@@ -2,14 +2,16 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   return sequelize.define(
-    'status',
+    'board',
     {
-      status_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+      title: {
+        type: DataTypes.STRING,
       },
-      status_name: {
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      type: {
         type: DataTypes.STRING,
       },
     },

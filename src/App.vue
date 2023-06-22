@@ -1,18 +1,31 @@
 <template>
-  <router-view></router-view>
+  <div id="app-container">
+    <Suspense>
+      <Sidebar />
+      <template #fallback> Loading sidebar... </template>
+    </Suspense>
+    <Suspense>
+      <router-view></router-view>
+      <template #fallback> Loading your data... </template>
+    </Suspense>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import Checkable from './fragments/Todo/TodoCheckable.vue';
-import Card from './fragments/Card.vue';
-
-const good = ref(false);
+import Sidebar from './fragments/Sidebar/Sidebar.vue';
 </script>
 
 <style lang="scss">
-@import 'mixins';
-@import 'variables';
+#app {
+  min-height: 100vh;
+}
+
+#app-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 100vh;
+}
+
 /*
 Card component
  */

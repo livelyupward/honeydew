@@ -111,7 +111,7 @@ Structural elements
 aside {
   padding: 1.375rem;
 }
-section {
+section:not(.honeydew-stage) {
   padding: 1.375rem;
   min-width: 300px;
 }

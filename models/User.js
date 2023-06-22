@@ -1,26 +1,9 @@
-import { DataTypes } from 'sequelize';
+import mongoose, { Schema } from 'mongoose';
 
-export default (sequelize) => {
-  return sequelize.define(
-    'user',
-    {
-      user_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      username: {
-        type: DataTypes.STRING,
-      },
-      role: {
-        type: DataTypes.STRING,
-      },
-      email: {
-        type: DataTypes.STRING,
-      },
-    },
-    {
-      timestamps: true,
-    }
-  );
-};
+const userSchema = new Schema({
+  name: String,
+  email: { type: String, required: true, unique: true },
+  activeSpace: { type: Schema.Types.ObjectId, required: false },
+});
+
+export const User = mongoose.model('User', userSchema);

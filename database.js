@@ -1,9 +1,10 @@
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
-import { Sequelize } from 'sequelize';
 
-export const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-  host: 'localhost',
-  dialect: 'mariadb',
-  logging: false,
-});
+export default async function main() {
+  await mongoose.connect(`mongodb://${process.env.DB_HOST}/honeydew`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
