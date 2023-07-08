@@ -1,7 +1,9 @@
 <template>
   <div id="honeydew-space" v-if="spaceAndContent">
-    <h1 class="honeydew-space_heading">{{ spaceAndContent.space.title }}</h1>
-    <InteractiveStage />
+    <h1 class="honeydew-space_heading">
+      {{ spaceAndContent.title ? spaceAndContent.title : 'Create a space!' }}
+    </h1>
+    <SortableStage />
   </div>
   <p v-else>Loading space...</p>
 </template>
@@ -9,7 +11,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { mainStore } from '../store.ts';
-import InteractiveStage from '../fragments/Stage/InteractiveStage.vue';
+import SortableStage from '../fragments/Stage/SortableStage.vue';
 import { ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 const store = mainStore();

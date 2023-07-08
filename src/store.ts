@@ -18,12 +18,8 @@ export const mainStore = defineStore('main', () => {
     return { space: spaceContent.value, content: spaceContent.value };
   });
 
-  // function addNewItemToContent(newContentObj: HoneydewItem): void {
-  //   spaceContent.value.push(newContentObj);
-  // }
-
   async function getUser() {
-    const userRequest = await fetch(`http://localhost:4000/users/dave@livelyupward.dev`);
+    const userRequest = await fetch(`/api/users/dave@livelyupward.dev`);
 
     if (!userRequest.ok) throw new Error('Unable to retrieve user with email dave@livelyupward.dev');
 
@@ -35,7 +31,7 @@ export const mainStore = defineStore('main', () => {
   }
 
   async function getUserSpaces() {
-    const getSpacesRequest = await fetch(`http://localhost:4000/spaces`);
+    const getSpacesRequest = await fetch(`/api/spaces`);
     const getSpaceResponse = await getSpacesRequest.json();
 
     if (!getSpacesRequest.ok) throw new Error('Unable to fetch user spaces.');
@@ -48,7 +44,7 @@ export const mainStore = defineStore('main', () => {
   async function createSpace(spaceTitle: string) {
     try {
       if (!currentUser.value) throw new Error('User not found. Cannot retrieve spaces without user.');
-      const spaceCreateRequest = await fetch(`http://localhost:4000/spaces`, {
+      const spaceCreateRequest = await fetch(`/api/spaces`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +57,7 @@ export const mainStore = defineStore('main', () => {
       const spaceCreateResponse = await spaceCreateRequest.json();
       await getUserSpaces();
 
-      return { ...spaceCreateResponse };
+      return spaceCreateResponse;
     } catch (error) {
       return { error };
     }
@@ -69,18 +65,14 @@ export const mainStore = defineStore('main', () => {
 
   async function getSpaceAndContent(id: string | RouteParamValue[]) {
     try {
-      const spaceRequest = await fetch(`http://localhost:4000/spaces/${id}`);
+      const spaceRequest = await fetch(`/api/spaces/${id}?content=yes`);
       if (!spaceRequest.ok) throw new Error('Unable to retrieve space with id of ' + id);
       const spaceResponse = await spaceRequest.json();
 
-      const contentRequest = await fetch(`http://localhost:4000/content/${spaceResponse._id}`);
-      if (!contentRequest.ok) throw new Error('Unable to retrieve content for space with id ' + spaceResponse._id);
-      const contentResponse = await contentRequest.json();
-
       currentSpace.value = spaceResponse;
-      spaceContent.value = contentResponse;
+      spaceContent.value = spaceResponse.content;
 
-      return { space: spaceResponse, content: [contentResponse] };
+      return spaceResponse;
     } catch (error) {
       return { error };
     }
@@ -90,7 +82,7 @@ export const mainStore = defineStore('main', () => {
     try {
       console.log('obj: ', contentObj);
       const newContentItemRequest = await fetch(
-        `http://localhost:4000/content${contentObj.spaceId ? `/?spaceid=${contentObj.spaceId}` : ''}`,
+        `/api/content${contentObj.spaceId ? `?spaceid=${contentObj.spaceId}` : ''}`,
         {
           method: 'POST',
           headers: {
@@ -99,9 +91,7 @@ export const mainStore = defineStore('main', () => {
           body: JSON.stringify(contentObj),
         }
       );
-
       if (!newContentItemRequest.ok) throw new Error('Error creating new content item.');
-
       const newContentItemResponse = await newContentItemRequest.json();
 
       spaceContent.value.push(newContentItemResponse.contentItem);
@@ -112,11 +102,38 @@ export const mainStore = defineStore('main', () => {
     }
   }
 
+  async function addContentToSpace(contentObj: ContentItem) {
+    let alteredContent = getCurrentSpace.value ? getCurrentSpace.value.content : null;
+
+    if (!contentObj._id || !getCurrentSpace.value)
+      throw new Error('Content object ID or Space is unavailable. Please try again or contact a developer.');
+
+    console.log('currentSpace: ', getCurrentSpace.value);
+    console.log('contentObj: ', contentObj);
+    if (alteredContent === null)
+      throw new Error('Content was not able to be retrieved before adding to its current space. Please contact a dev.');
+    alteredContent.push(contentObj._id);
+    console.log('altered: ', alteredContent);
+    const dataToSubmit = { ...getCurrentSpace.value, content: alteredContent };
+
+    const spaceRequest = await fetch(`/api/spaces${currentSpace.value ? `/${currentSpace.value._id}` : ``}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSubmit),
+    });
+    if (!spaceRequest.ok) throw new Error("Content item's space was not found. Please try again.");
+    const spaceResponse = await spaceRequest.json();
+
+    return spaceResponse;
+  }
+
   async function setActiveSpace(spaceId: string | undefined) {
     if (userGetter.value === undefined)
       throw new Error('A user id was not provided, therefore a new active space could not be set.');
     try {
-      const setActiveRequest = await fetch(`http://localhost:4000/users/active-space/${userGetter.value._id}`, {
+      const setActiveRequest = await fetch(`/api/users/active-space/${userGetter.value._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -128,6 +145,27 @@ export const mainStore = defineStore('main', () => {
 
       return setActiveResponse;
     } catch (error) {}
+  }
+
+  async function submitCurrentSpaceContent(contentArray: string[]) {
+    console.log(contentArray);
+    if (!getCurrentSpace.value)
+      throw new Error('Space is undefined. A space is required to complete this action. Please try again.');
+    // get current space id
+    const spaceId = getCurrentSpace.value._id;
+    // make content id array equal to the array being passed
+    const spaceWithNewContentRequest = await fetch(`/api/spaces/${spaceId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contentArray),
+    });
+    if (!spaceWithNewContentRequest.ok)
+      throw new Error('Space content could not be saved. Please try again or contact a developer.');
+    const spaceWithNewContentResponse = spaceWithNewContentRequest.json();
+
+    return spaceWithNewContentResponse;
   }
 
   return {
@@ -144,6 +182,8 @@ export const mainStore = defineStore('main', () => {
     getSpaceAndContent,
     createNewContentItem,
     setActiveSpace,
+    submitCurrentSpaceContent,
+    addContentToSpace,
   };
 });
 
@@ -153,7 +193,9 @@ export interface State {
 }
 
 interface UserSpace {
+  _id: number;
   title: string;
+  content: string[];
 }
 
 export interface HoneydewItem {
@@ -170,6 +212,7 @@ interface User {
 }
 
 interface ContentItem {
+  _id?: string;
   date?: Date;
   checked?: boolean;
   type: string;

@@ -1,11 +1,11 @@
 <template>
   <main class="honeydew_main-container">
-    <InteractiveStage />
+    <SortableStage />
   </main>
 </template>
 
 <script setup>
-import InteractiveStage from '../fragments/Stage/InteractiveStage.vue';
+import SortableStage from '../fragments/Stage/SortableStage.vue';
 </script>
 
 <style lang="scss" scoped>

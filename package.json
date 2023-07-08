@@ -29,7 +29,10 @@
     "morgan": "^1.10.0",
     "pinia": "^2.0.35",
     "sequelize": "^6.31.0",
+    "sortablejs": "^1.15.0",
+    "sortablejs-vue3": "^1.2.9",
     "vue": "^3.2.47",
+    "vue-confetti-explosion": "^1.0.2",
     "vue-router": "4",
     "vue3-popper": "^1.5.0",
     "vuedraggable": "^4.1.0"

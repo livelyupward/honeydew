@@ -15,7 +15,13 @@ export default {
   async getById(req, res) {
     try {
       const id = req.params.id;
-      const space = await Space.findById(id);
+      let space;
+
+      if (req.query.content !== 'yes') {
+        space = await Space.findById(id);
+      } else {
+        space = await Space.findById(id).populate('content');
+      }
 
       res.status(200).send(space);
     } catch (error) {
@@ -32,7 +38,19 @@ export default {
 
       const savedSpace = await newSpace.save();
 
-      res.status(201).send({ space: savedSpace });
+      res.status(201).send(savedSpace);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+
+  async updateSpaceContentById(req, res) {
+    const id = req.params.id;
+    console.log(req.body);
+    try {
+      const space = await Space.findByIdAndUpdate(id, { content: req.body.content });
+      console.log('updated the content');
+      res.status(201).send(space);
     } catch (error) {
       res.status(500).send(error);
     }

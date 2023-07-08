@@ -27,9 +27,9 @@ app.get('/', (req, res) => {
   res.send('hello');
 });
 
-app.use('/spaces', spaceRoutes);
-app.use('/users', userRoutes);
-app.use('/content', contentRoutes);
+app.use('/api/spaces', spaceRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/content', contentRoutes);
 
 app.listen(port, () => {
   console.log(`express running at http://localhost:${port}`);

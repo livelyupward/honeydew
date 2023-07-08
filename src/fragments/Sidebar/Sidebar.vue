@@ -24,7 +24,7 @@
           </li>
           <Transition name="slide-up">
             <li v-show="creatingSpace">
-              <form @submit.prevent="callStoreCreateSpace">
+              <form @submit.prevent="callToCreateSpace">
                 <label for="newSpaceName">New space title:</label>
                 <input ref="createSpaceInput" v-model="spaceTitle" id="newSpaceName" type="text" />
               </form>
@@ -33,17 +33,6 @@
         </ul>
       </div>
     </header>
-
-    <!--    <header class="honeydew-sidebar_sub-links honeydew-sidebar_container">-->
-    <!--      <div class="honeydew-sidebar_sub-links_container">-->
-    <!--        <SidebarHeading> Sprints </SidebarHeading>-->
-    <!--        <ul class="honeydew-sidebar_sub-links_list">-->
-    <!--          <li class="honeydew-sidebar_sub-link">4/17/23</li>-->
-    <!--          <li class="honeydew-sidebar_sub-link">5/1/23</li>-->
-    <!--          <li class="honeydew-sidebar_sub-link">5/15/23</li>-->
-    <!--        </ul>-->
-    <!--      </div>-->
-    <!--    </header>-->
     <header class="honeydew-sidebar_quick-items">
       <ul class="honeydew-sidebar_quick-items_list">
         <li class="honeydew-sidebar_quick-items_list-link"></li>
@@ -58,6 +47,8 @@ import SidebarHeading from './SidebarHeading.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { mainStore } from '../../store.ts';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const store = mainStore();
 const { getUserSpaces, createSpace } = store;
 const { userSpaces, userSpacesGetter } = storeToRefs(store);
@@ -80,10 +71,11 @@ function deactivateCreateSpace() {
   spaceTitle.value = '';
 }
 // function calling store create space
-async function callStoreCreateSpace() {
-  await createSpace(spaceTitle.value);
+async function callToCreateSpace() {
+  const newSpace = await createSpace(spaceTitle.value);
   creatingSpace.value = false;
   spaceTitle.value = '';
+  await router.push(`/spaces/${newSpace._id}`);
 }
 </script>
 
