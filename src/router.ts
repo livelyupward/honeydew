@@ -19,6 +19,10 @@ const routes = [
     },
   },
   {
+    path: '/auth',
+    component: () => import('./views/Auth.vue'),
+  },
+  {
     path: '/today',
     component: () => import('./views/Today.vue'),
   },
@@ -29,7 +33,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('./views/NotFound.vue'),
+    component: () => import('./views/errors/NotFound.vue'),
   },
 ];
 
@@ -42,9 +46,12 @@ export const router = createRouter({
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const store = mainStore();
   const { userGetter } = storeToRefs(store);
-  const { getUser } = store;
-
-  if (!userGetter.value) await getUser();
-
-  next();
+  console.log('hello?');
+  if (!userGetter.value) {
+    if (to.path !== '/auth') {
+      return next('/auth');
+    } else {
+      return next();
+    }
+  }
 });
