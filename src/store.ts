@@ -102,6 +102,21 @@ export const mainStore = defineStore('main', () => {
     }
   }
 
+  async function editContentItem(contentObj: ContentItem) {
+    console.log(contentObj);
+    const editContentRequest = await fetch(`/api/content/single/${contentObj._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contentObj),
+    });
+    if (!editContentRequest.ok) throw new Error('Edit to content failed.');
+    const editContentResponse = await editContentRequest.json();
+
+    return editContentResponse;
+  }
+
   async function addContentToSpace(contentObj: ContentItem) {
     let alteredContent = getCurrentSpace.value ? getCurrentSpace.value.content : null;
 
@@ -180,6 +195,7 @@ export const mainStore = defineStore('main', () => {
     createSpace,
     getSpaceAndContent,
     createNewContentItem,
+    editContentItem,
     setActiveSpace,
     submitCurrentSpaceContent,
     addContentToSpace,
@@ -210,7 +226,7 @@ interface User {
   activeSpace?: string;
 }
 
-interface ContentItem {
+export interface ContentItem {
   _id?: string;
   date?: Date;
   checked?: boolean;

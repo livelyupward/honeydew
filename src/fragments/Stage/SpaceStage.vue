@@ -2,7 +2,7 @@
   <section class="honeydew-stage">
     <Sortable v-if="mutableContent.length" :list="mutableContent" item-key="id" @end="completeSorting">
       <template #item="{ element, index }">
-        <SpaceFragment :key="element.id">
+        <SpaceFragment :key="element.id" :content-item="element">
           {{ element.text }}
         </SpaceFragment>
       </template>

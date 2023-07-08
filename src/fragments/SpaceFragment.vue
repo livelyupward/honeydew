@@ -7,7 +7,7 @@
       class="honeydew-space_content-item"
       ref="fragmentContent"
       contenteditable="true"
-      @keydown.enter="submitFragment"
+      @keydown.enter="submitEditedFragment"
     >
       <slot></slot>
     </div>
@@ -27,27 +27,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { mainStore } from '../store.ts';
+import { Ref, ref } from 'vue';
+import { mainStore, type ContentItem } from '../store.ts';
 import { storeToRefs } from 'pinia';
 const store = mainStore();
-const { createNewContentItem } = store;
-const { userGetter } = storeToRefs(store);
+const { editContentItem } = store;
 
-const fragmentContent = ref(null);
+const fragmentContent: Ref<HTMLElement|null> = ref(null);
 
-async function submitFragment(event) {
+const props = defineProps<{
+  contentItem: ContentItem;
+}>();
+
+async function submitEditedFragment(event) {
   event.preventDefault();
 
-  const newContentRequest = await createNewContentItem({
-    text: fragmentContent.value.textContent,
-    type: 'note',
-    spaceId: userGetter.value?.activeSpace ? userGetter.value.activeSpace : undefined,
-    userId: userGetter.value?._id,
-  });
+  const spaceItem = event.target;
+  console.log(spaceItem);
 
-  console.log('Content: ', fragmentContent.value.textContent);
-  fragmentContent.value.textContent = '';
+  spaceItem.classList.add('submitted');
+  setTimeout(() => {
+    spaceItem.classList.remove('submitted');
+  }, 550);
+
+  let textContentWorkaround = '';
+
+  if ('textContent' in fragmentContent.value && fragmentContent.value !== null) {
+    textContentWorkaround = fragmentContent.value.textContent;
+  } else {
+    throw new Error('Fragment content is null. Cannot complete submission.');
+  }
+
+  const newContentRequest = await editContentItem({ ...props.contentItem, text: textContentWorkaround });
 
   return newContentRequest;
 }
@@ -71,28 +82,8 @@ async function submitFragment(event) {
   display: flex;
   position: relative;
 
-  &.bottom-pad {
-    padding-bottom: 20px;
-  }
-
-  &.top-pad {
-    padding-top: 20px;
-  }
-
-  &.grabbed {
-    opacity: 0;
-  }
-
   &:not(:last-of-type) {
     margin-bottom: 0.5rem;
-  }
-
-  .honeydew-space_item-sort {
-    border-right: 3px solid #efefef;
-  }
-
-  .honeydew-space_item-convert {
-    border-left: 3px solid #efefef;
   }
 
   .honeydew-space_item-sort,
@@ -128,6 +119,14 @@ async function submitFragment(event) {
     &.hovered {
       margin-top: 20px;
     }
+
+    &.submitted {
+      animation: {
+        name: succeed;
+        duration: 0.5s;
+        timing-function: ease-in;
+      }
+    }
   }
 
   &:hover {
@@ -148,6 +147,12 @@ async function submitFragment(event) {
 
     .honeydew-space_content-item {
       margin: 0;
+    }
+
+    &:not(.new) {
+      .honeydew-space_content-item {
+        border-radius: 0;
+      }
     }
   }
 }
@@ -183,6 +188,20 @@ async function submitFragment(event) {
     &:first-of-type {
       border-right: 1px solid #ddd;
     }
+  }
+}
+
+@keyframes succeed {
+  0% {
+    background-color: rgba(129, 199, 132, 0);
+  }
+
+  50% {
+    background-color: rgba(129, 199, 132, 0.25);
+  }
+
+  100% {
+    background-color: rgba(129, 199, 132, 0);
   }
 }
 </style>

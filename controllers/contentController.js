@@ -40,4 +40,16 @@ export default {
       res.status(500).send(error);
     }
   },
+
+  async editById(req, res) {
+    const id = req.body._id;
+
+    try {
+      const editContent = await ContentItem.findByIdAndUpdate(id, { text: req.body.text });
+
+      res.status(201).send(editContent);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
 };
