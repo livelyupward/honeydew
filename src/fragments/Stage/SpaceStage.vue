@@ -37,7 +37,7 @@ const moveItemInArray = (array, from, to) => {
 };
 
 async function completeSorting(event) {
-  moveItemInArray(getCurrentSpace.value.content, event.oldIndex, event.newIndex);
+  moveItemInArray(mutableContent, event.oldIndex, event.newIndex);
   // @ts-ignore
   await submitCurrentSpaceContent({ ...getCurrentSpace.value, content: mutableContent });
 }

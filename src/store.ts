@@ -116,7 +116,8 @@ export const mainStore = defineStore('main', () => {
   }
 
   async function addContentToSpace(contentObj: ContentItem) {
-    let alteredContent = getCurrentSpace.value ? getCurrentSpace.value.content : null;
+    // @ts-ignore
+    let alteredContent: string[] | null = getCurrentSpace.value ? getCurrentSpace.value.content : null;
 
     if (!contentObj._id || !getCurrentSpace.value)
       throw new Error('Content object ID or Space is unavailable. Please try again or contact a developer.');
