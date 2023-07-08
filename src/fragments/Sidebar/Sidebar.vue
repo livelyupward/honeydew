@@ -3,7 +3,10 @@
     <header class="honeydew-sidebar_links honeydew-sidebar_container">
       <div class="honeydew-sidebar_spaces" v-if="userSpaces">
         <SidebarHeading>
-          <span class="honeydew-sidebar_spaces-heading">Spaces</span>
+          <span class="honeydew-sidebar_spaces-heading">
+            <font-awesome-icon :icon="['fas', 'honey-pot']" />
+            Spaces
+          </span>
           <button class="honeydew-sidebar_create-space-button" @click="activateCreateSpace" v-if="!creatingSpace">
             <font-awesome-icon :icon="['fas', 'plus']" />
           </button>
@@ -88,7 +91,14 @@ async function callToCreateSpace() {
   padding: 2rem;
 
   .honeydew-sidebar_spaces-heading {
+    align-items: center;
+    display: flex;
     font-size: 1.5rem;
+
+    svg {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
   }
 
   .honeydew-sidebar_link {
@@ -110,7 +120,7 @@ async function callToCreateSpace() {
     position: relative;
 
     .honeydew-sidebar_link-active-icon {
-      left: -10px;
+      left: -12px;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);

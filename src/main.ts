@@ -8,8 +8,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus, faGripLines, faLayerGroup, faXmark, faCaretRight, faBell } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons';
+import { faHoneyPot } from '@fortawesome/pro-solid-svg-icons';
 
-library.add(faPlus, faGripLines, faLayerGroup, faXmark, faCaretRight, faCalendarDays, faBell);
+library.add(faPlus, faGripLines, faLayerGroup, faXmark, faCaretRight, faCalendarDays, faBell, faHoneyPot);
 
 const pinia = createPinia();
 

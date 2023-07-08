@@ -1,6 +1,11 @@
 <template>
   <section class="honeydew-stage">
-    <Sortable v-if="mutableContent.length" :list="mutableContent" item-key="id" @end="completeSorting">
+    <Sortable
+      v-if="getCurrentSpace.content.length"
+      :list="getCurrentSpace.content"
+      item-key="id"
+      @end="completeSorting"
+    >
       <template #item="{ element, index }">
         <SpaceFragment :key="element.id" :content-item="element">
           {{ element.text }}
@@ -15,15 +20,16 @@
 import { Sortable } from 'sortablejs-vue3';
 import SpaceFragment from '../SpaceFragment.vue';
 import NewFragment from '../NewFragment.vue';
-import { mainStore } from '../../store.ts';
+import { ContentItem, mainStore } from '../../store.ts';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, ComputedRef, ref } from 'vue';
 
 const store = mainStore();
-const { getSpaceContent } = storeToRefs(store);
+const { getCurrentSpace } = storeToRefs(store);
 const { submitCurrentSpaceContent } = store;
 
-let mutableContent = computed(() => [...getSpaceContent.value.content]);
+// @ts-ignore
+let mutableContent: ContentItem[] = getCurrentSpace.value.content;
 
 const moveItemInArray = (array, from, to) => {
   const item = array.splice(from, 1)[0];
@@ -31,8 +37,9 @@ const moveItemInArray = (array, from, to) => {
 };
 
 async function completeSorting(event) {
-  moveItemInArray(mutableContent.value, event.oldIndex, event.newIndex);
-  await submitCurrentSpaceContent({ ...getSpaceContent.value, content: mutableContent.value });
+  moveItemInArray(getCurrentSpace.value.content, event.oldIndex, event.newIndex);
+  // @ts-ignore
+  await submitCurrentSpaceContent({ ...getCurrentSpace.value, content: mutableContent });
 }
 </script>
 

@@ -1,21 +1,21 @@
 import { defineStore } from 'pinia';
-import { computed, ComputedRef, Ref, ref } from 'vue';
+import { computed, ComputedRef, nextTick, Ref, ref } from 'vue';
 import { RouteParamValue } from 'vue-router';
 
 export const mainStore = defineStore('main', () => {
   const currentUser: Ref<User | undefined> = ref();
   const userSpaces: Ref<UserSpace[] | undefined> = ref();
   const currentSpace: Ref<UserSpace | undefined> = ref();
-  const spaceContent: Ref<any | undefined> = ref();
+  const fireworksVisible: Ref<boolean> = ref(false);
 
   const userGetter: ComputedRef<User | undefined> = computed(() => currentUser.value);
 
   const userSpacesGetter: ComputedRef<UserSpace[] | undefined> = computed(() => userSpaces.value);
 
-  const getCurrentSpace = computed(() => currentSpace.value);
+  const getCurrentSpace: ComputedRef<UserSpace | undefined> = computed(() => currentSpace.value);
 
-  const getSpaceContent: ComputedRef<any> = computed(() => {
-    return { space: spaceContent.value, content: spaceContent.value };
+  const getFireworksState: ComputedRef<boolean> = computed(() => {
+    return fireworksVisible.value;
   });
 
   async function getUser() {
@@ -70,7 +70,6 @@ export const mainStore = defineStore('main', () => {
       const spaceResponse = await spaceRequest.json();
 
       currentSpace.value = spaceResponse;
-      spaceContent.value = spaceResponse.content;
 
       return spaceResponse;
     } catch (error) {
@@ -93,8 +92,7 @@ export const mainStore = defineStore('main', () => {
       );
       if (!newContentItemRequest.ok) throw new Error('Error creating new content item.');
       const newContentItemResponse = await newContentItemRequest.json();
-
-      spaceContent.value.push(newContentItemResponse.contentItem);
+      // currentSpace.value?.content.push(newContentItemResponse.contentItem);
 
       return newContentItemResponse;
     } catch (error) {
@@ -162,7 +160,7 @@ export const mainStore = defineStore('main', () => {
     } catch (error) {}
   }
 
-  async function submitCurrentSpaceContent(contentArray: string[]) {
+  async function submitCurrentSpaceContent(contentArray: ContentItem[]) {
     if (!getCurrentSpace.value)
       throw new Error('Space is undefined. A space is required to complete this action. Please try again.');
     // get current space id
@@ -182,16 +180,21 @@ export const mainStore = defineStore('main', () => {
     return spaceWithNewContentResponse;
   }
 
+  async function launchFireworks() {
+    fireworksVisible.value = false;
+    await nextTick();
+    fireworksVisible.value = true;
+  }
+
   return {
     currentUser,
     userSpaces,
-    spaceContent,
-    getSpaceContent,
     userSpacesGetter,
     userGetter,
     getUser,
     getUserSpaces,
     getCurrentSpace,
+    getFireworksState,
     createSpace,
     getSpaceAndContent,
     createNewContentItem,
@@ -199,18 +202,14 @@ export const mainStore = defineStore('main', () => {
     setActiveSpace,
     submitCurrentSpaceContent,
     addContentToSpace,
+    launchFireworks,
   };
 });
-
-export interface State {
-  userSpaces?: UserSpace[];
-  spaceContent?: HoneydewItem[];
-}
 
 interface UserSpace {
   _id: number;
   title: string;
-  content: string[];
+  content: ContentItem[];
 }
 
 export interface HoneydewItem {
