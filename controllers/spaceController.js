@@ -46,10 +46,10 @@ export default {
 
   async updateSpaceContentById(req, res) {
     const id = req.params.id;
-    console.log(req.body);
+
     try {
       const space = await Space.findByIdAndUpdate(id, { content: req.body.content });
-      console.log('updated the content');
+
       res.status(201).send(space);
     } catch (error) {
       res.status(500).send(error);

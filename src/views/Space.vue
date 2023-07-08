@@ -1,9 +1,7 @@
 <template>
   <div id="honeydew-space" v-if="spaceAndContent">
-    <h1 class="honeydew-space_heading">
-      {{ spaceAndContent.title ? spaceAndContent.title : 'Create a space!' }}
-    </h1>
-    <SortableStage />
+    <SpaceTitle :title="spaceTitle" />
+    <SpaceStage />
   </div>
   <p v-else>Loading space...</p>
 </template>
@@ -11,15 +9,17 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { mainStore } from '../store.ts';
-import SortableStage from '../fragments/Stage/SortableStage.vue';
 import { ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
+import SpaceTitle from '../fragments/Stage/SpaceTitle.vue';
+import SpaceStage from '../fragments/Stage/SpaceStage.vue';
 const store = mainStore();
 const { userGetter } = storeToRefs(store);
 const { getSpaceAndContent, setActiveSpace } = store;
 
 const route = useRoute();
 const spaceAndContent = ref(await getSpaceAndContent(route.params.id));
+const spaceTitle = spaceAndContent.title ? spaceAndContent.title : 'Create a space!';
 
 watchEffect(async () => {
   if (userGetter.value?.activeSpace !== route.params.id) {
@@ -30,11 +30,12 @@ watchEffect(async () => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #honeydew-space {
   padding: 1.375rem;
 
   .honeydew-space_heading {
+    color: #e1e1e1;
     font-size: 2.875rem;
     font-weight: 900;
     margin: 0 30px 1rem;

@@ -28,10 +28,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { mainStore } from '../store.ts';
+import { storeToRefs } from 'pinia';
+const store = mainStore();
+const { createNewContentItem } = store;
+const { userGetter } = storeToRefs(store);
 
 const fragmentContent = ref(null);
-const handle = ref(null);
-let target = false;
+
 async function submitFragment(event) {
   event.preventDefault();
 
@@ -130,6 +134,7 @@ async function submitFragment(event) {
     .honeydew-space_item-sort,
     .honeydew-space_item-nosort,
     .honeydew-space_item-convert {
+      border-color: #888;
       display: flex;
     }
 
@@ -137,7 +142,8 @@ async function submitFragment(event) {
     .honeydew-space_item-convert {
       @include round;
       @include shadow-sm;
-      background-color: #fff;
+      background-color: $black;
+      color: #fff;
     }
 
     .honeydew-space_content-item {
@@ -149,7 +155,8 @@ async function submitFragment(event) {
 .honeydew-space_content-item {
   @include shadow-sm;
   @include round;
-  background-color: #fff;
+  background-color: $black;
+  color: $white;
   margin: 0 30px;
   padding: 3px 8px;
   position: relative;

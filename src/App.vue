@@ -17,6 +17,7 @@ import Sidebar from './fragments/Sidebar/Sidebar.vue';
 
 <style lang="scss">
 #app {
+  background-color: $black;
   min-height: 100vh;
 }
 

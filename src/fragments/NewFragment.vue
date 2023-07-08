@@ -4,21 +4,11 @@
       <font-awesome-icon :icon="['fas', 'grip-lines']" />
     </div>
     <div
-      @keydown.enter="submitFragment"
+      @keydown.enter="submitNewFragment"
       ref="fragmentContent"
       class="honeydew-space_content-item"
       contenteditable="true"
     ></div>
-    <!--    <div class="honeydew-space_content-item_actions">-->
-    <!--      <button class="honeydew-space_content-item_actions-button">-->
-    <!--        <font-awesome-icon :icon="['far', 'calendar-days']" />-->
-    <!--        Date-->
-    <!--      </button>-->
-    <!--      <button class="honeydew-space_content-item_actions-button">-->
-    <!--        <font-awesome-icon :icon="['fas', 'bell']" />-->
-    <!--        Remind-->
-    <!--      </button>-->
-    <!--    </div>-->
     <div class="honeydew-space_item-convert">
       <Popper>
         <font-awesome-icon :icon="['fas', 'layer-group']" />
@@ -47,7 +37,7 @@ const route = useRoute();
 const fragmentContentTypes = Object.keys(fragmentMap);
 const fragmentContent = ref(null);
 
-async function submitFragment(event) {
+async function submitNewFragment(event) {
   event.preventDefault();
 
   const newContentRequest = await createNewContentItem({

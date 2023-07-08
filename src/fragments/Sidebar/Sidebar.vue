@@ -81,7 +81,8 @@ async function callToCreateSpace() {
 
 <style lang="scss" scoped>
 #honeydew-sidebar {
-  background-color: $transparent;
+  background-color: #434343;
+  color: #fff;
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -136,7 +137,12 @@ header {
   margin-top: auto;
 
   span {
+    color: #e1e1e1;
     margin-right: auto;
+  }
+
+  button {
+    color: #e1e1e1;
   }
 }
 

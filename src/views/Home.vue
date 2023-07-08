@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import SortableStage from '../fragments/Stage/SortableStage.vue';
+import SortableStage from '../fragments/Stage/SpaceStage.vue';
 </script>
 
 <style lang="scss" scoped>

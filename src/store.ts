@@ -148,7 +148,6 @@ export const mainStore = defineStore('main', () => {
   }
 
   async function submitCurrentSpaceContent(contentArray: string[]) {
-    console.log(contentArray);
     if (!getCurrentSpace.value)
       throw new Error('Space is undefined. A space is required to complete this action. Please try again.');
     // get current space id
