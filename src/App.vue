@@ -19,6 +19,7 @@ import Sidebar from './fragments/Sidebar/Sidebar.vue';
 #app {
   background-color: $black;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 #app-container {

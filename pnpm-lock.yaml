@@ -9,6 +9,8 @@ specifiers:
   '@fortawesome/free-brands-svg-icons': ^6.4.0
   '@fortawesome/free-regular-svg-icons': ^6.4.0
   '@fortawesome/free-solid-svg-icons': ^6.4.0
+  '@fortawesome/pro-regular-svg-icons': ^6.4.0
+  '@fortawesome/pro-solid-svg-icons': ^6.4.0
   '@fortawesome/vue-fontawesome': ^3.0.3
   '@vitejs/plugin-vue': ^4.1.0
   '@vueup/vue-quill': ^1.2.0
@@ -44,6 +46,8 @@ dependencies:
   '@fortawesome/free-brands-svg-icons': 6.4.0
   '@fortawesome/free-regular-svg-icons': 6.4.0
   '@fortawesome/free-solid-svg-icons': 6.4.0
+  '@fortawesome/pro-regular-svg-icons': 6.4.0
+  '@fortawesome/pro-solid-svg-icons': 6.4.0
   '@fortawesome/vue-fontawesome': 3.0.3_5vq7vkrflr3ckmegqnktogj5ty
   body-parser: 1.20.2
   chalk: 5.2.0
@@ -326,7 +330,7 @@ packages:
     optional: true
 
   /@fortawesome/fontawesome-common-types/6.4.0:
-    resolution: {integrity: sha512-HNii132xfomg5QVZw0HwXXpN22s7VBHQBv9CeOu9tfJnhsWQNd2lmTNi8CSrnw5B+5YOmzu1UoPAyxaXsJ6RgQ==}
+    resolution: {integrity: sha512-HNii132xfomg5QVZw0HwXXpN22s7VBHQBv9CeOu9tfJnhsWQNd2lmTNi8CSrnw5B+5YOmzu1UoPAyxaXsJ6RgQ==, tarball: '@fortawesome/fontawesome-common-types/-/6.4.0/fontawesome-common-types-6.4.0.tgz'}
     engines: {node: '>=6'}
     requiresBuild: true
     dev: false
@@ -357,6 +361,22 @@ packages:
 
   /@fortawesome/free-solid-svg-icons/6.4.0:
     resolution: {integrity: sha512-kutPeRGWm8V5dltFP1zGjQOEAzaLZj4StdQhWVZnfGFCvAPVvHh8qk5bRrU4KXnRRRNni5tKQI9PBAdI6MP8nQ==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.0
+    dev: false
+
+  /@fortawesome/pro-regular-svg-icons/6.4.0:
+    resolution: {integrity: sha512-yEJgoA/31qfIsD27kAg31BODCD+bvgievPp4R39F3kUp/+mu05qX6xgW366RUfs4CnTWSw0fFpc4AhFwC7xbJw==, tarball: '@fortawesome/pro-regular-svg-icons/-/6.4.0/pro-regular-svg-icons-6.4.0.tgz'}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.0
+    dev: false
+
+  /@fortawesome/pro-solid-svg-icons/6.4.0:
+    resolution: {integrity: sha512-R54gxoqHAZdlSCmE7JYpQKT64Jgw59nQIyabT6oh3jsb70O4A3ea+ojVBCKsvoW4UhYe1IOXS1o4PqDEW8Y7Tg==, tarball: '@fortawesome/pro-solid-svg-icons/-/6.4.0/pro-solid-svg-icons-6.4.0.tgz'}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:

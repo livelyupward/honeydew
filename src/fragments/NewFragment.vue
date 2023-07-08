@@ -23,34 +23,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { mainStore } from '../store.ts';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { fragmentMap } from '../fragmentMap.ts';
 
 const store = mainStore();
-const { createNewContentItem, addContentToSpace } = store;
+const { createNewContentItem, addContentToSpace, launchFireworks, getSpaceAndContent } = store;
 const { userGetter } = storeToRefs(store);
 const route = useRoute();
 
 const fragmentContentTypes = Object.keys(fragmentMap);
-const fragmentContent = ref(null);
+const fragmentContent: Ref<HTMLDivElement | null> = ref(null);
 
 async function submitNewFragment(event) {
   event.preventDefault();
 
+  // @ts-ignore
   const newContentRequest = await createNewContentItem({
     text: fragmentContent.value.textContent,
     type: 'note',
     spaceId: typeof route.params.id === 'string' ? route.params.id : route.params.id[0],
     userId: userGetter.value?._id,
   });
-
+  // @ts-ignore
   fragmentContent.value.textContent = '';
 
   await addContentToSpace(newContentRequest.contentItem);
+  await getSpaceAndContent(newContentRequest.contentItem.spaceId);
 
+  await launchFireworks();
   return newContentRequest;
 }
 </script>
