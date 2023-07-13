@@ -10,7 +10,7 @@ const routes = [
     beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
       const store = mainStore();
       const { userGetter } = storeToRefs(store);
-      console.log('Enter');
+
       if (!userGetter.value) throw new Error('No user found before navigation. Please login.');
 
       if (userGetter.value.activeSpace) await router.push(`/spaces/${userGetter.value.activeSpace}`);
@@ -45,13 +45,34 @@ export const router = createRouter({
 // @ts-ignore
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const store = mainStore();
+  const { getUser } = store;
   const { userGetter } = storeToRefs(store);
-  console.log('hello?');
+
   if (!userGetter.value) {
-    if (to.path !== '/auth') {
-      return next('/auth');
+    console.log('No user in state');
+    if (localStorage.getItem('honeydew_my_credential')) {
+      const verifyToken = await fetch(`/api/auth/callback?cred=${localStorage.getItem('honeydew_my_credential')}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!verifyToken.ok) {
+        return next('/auth');
+      } else {
+        const tokenResponse = await verifyToken.json();
+
+        await getUser(tokenResponse.email);
+        return next();
+      }
     } else {
-      return next();
+      if (to.path !== '/auth') {
+        return next('/auth');
+      } else {
+        return next();
+      }
     }
+  } else {
+    return next();
   }
 });

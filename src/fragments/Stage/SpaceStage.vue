@@ -1,11 +1,6 @@
 <template>
-  <section class="honeydew-stage">
-    <Sortable
-      v-if="getCurrentSpace.content.length"
-      :list="getCurrentSpace.content"
-      item-key="id"
-      @end="completeSorting"
-    >
+  <section class="honeydew-stage" v-if="getCurrentSpace.content.length">
+    <Sortable :list="getCurrentSpace.content" item-key="id" @end="completeSorting">
       <template #item="{ element, index }">
         <SpaceFragment :key="element.id" :content-item="element">
           {{ element.text }}
@@ -14,6 +9,9 @@
     </Sortable>
     <NewFragment />
   </section>
+  <div class="honeydew-stage loading" v-else>
+    <p>Loading space...</p>
+  </div>
 </template>
 
 <script setup lang="ts">
