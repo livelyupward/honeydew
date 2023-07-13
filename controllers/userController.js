@@ -8,6 +8,10 @@ export default {
     try {
       const user = await User.findOne({ email });
 
+      if (!user) {
+        res.status(404).send({ error: `No user found for email ${email}.` });
+      }
+
       res.status(200).send(user);
     } catch (error) {
       return { error };
@@ -23,7 +27,7 @@ export default {
 
       const savedUser = await newUser.save();
 
-      res.status(201).send({ ...savedUser });
+      res.status(201).send(savedUser);
     } catch (error) {
       return { error };
     }

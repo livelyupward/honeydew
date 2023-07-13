@@ -18,8 +18,8 @@ export const mainStore = defineStore('main', () => {
     return fireworksVisible.value;
   });
 
-  async function getUser() {
-    const userRequest = await fetch(`/api/users/dave@livelyupward.dev`);
+  async function getUser(userEmail: string) {
+    const userRequest = await fetch(`/api/users/${userEmail}`);
 
     if (!userRequest.ok) throw new Error('Unable to retrieve user with email dave@livelyupward.dev');
 
@@ -27,7 +27,7 @@ export const mainStore = defineStore('main', () => {
 
     currentUser.value = userResponse;
 
-    return { ...userResponse };
+    return userResponse;
   }
 
   async function getUserSpaces() {

@@ -10,13 +10,17 @@ const routes = [
     beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
       const store = mainStore();
       const { userGetter } = storeToRefs(store);
-      console.log('Enter');
+
       if (!userGetter.value) throw new Error('No user found before navigation. Please login.');
 
       if (userGetter.value.activeSpace) await router.push(`/spaces/${userGetter.value.activeSpace}`);
 
       next();
     },
+  },
+  {
+    path: '/auth',
+    component: () => import('./views/Auth.vue'),
   },
   {
     path: '/today',
@@ -29,7 +33,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('./views/NotFound.vue'),
+    component: () => import('./views/errors/NotFound.vue'),
   },
 ];
 
@@ -41,10 +45,34 @@ export const router = createRouter({
 // @ts-ignore
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const store = mainStore();
-  const { userGetter } = storeToRefs(store);
   const { getUser } = store;
+  const { userGetter } = storeToRefs(store);
 
-  if (!userGetter.value) await getUser();
+  if (!userGetter.value) {
+    console.log('No user in state');
+    if (localStorage.getItem('honeydew_my_credential')) {
+      const verifyToken = await fetch(`/api/auth/callback?cred=${localStorage.getItem('honeydew_my_credential')}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!verifyToken.ok) {
+        return next('/auth');
+      } else {
+        const tokenResponse = await verifyToken.json();
 
-  next();
+        await getUser(tokenResponse.email);
+        return next();
+      }
+    } else {
+      if (to.path !== '/auth') {
+        return next('/auth');
+      } else {
+        return next();
+      }
+    }
+  } else {
+    return next();
+  }
 });

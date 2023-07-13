@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import './style.scss';
 import App from './App.vue';
+import vue3GoogleLogin from 'vue3-google-login';
 import { router } from './router.ts';
 import { createPinia } from 'pinia';
 import Popper from 'vue3-popper';
@@ -16,6 +17,9 @@ const pinia = createPinia();
 
 createApp(App)
   .use(router)
+  .use(vue3GoogleLogin, {
+    clientId: '341685135952-qr8o9jbdimsjfq1gd8rcc128rlj5kb09.apps.googleusercontent.com',
+  })
   .component('Popper', Popper)
   .component('font-awesome-icon', FontAwesomeIcon)
   .use(pinia)
