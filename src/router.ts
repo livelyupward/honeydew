@@ -58,7 +58,11 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
         },
       });
       if (!verifyToken.ok) {
-        return next('/auth');
+        if (to.path !== '/auth') {
+          return next('/auth');
+        } else {
+          return next();
+        }
       } else {
         const tokenResponse = await verifyToken.json();
 

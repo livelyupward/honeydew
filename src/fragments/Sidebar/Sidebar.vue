@@ -14,17 +14,21 @@
             <font-awesome-icon :icon="['fas', 'xmark']" />
           </button>
         </SidebarHeading>
-        <ul class="honeydew-sidebar_links-list">
-          <li v-for="space in userSpacesGetter" class="honeydew-sidebar_link" @click="selectedLink = space.title">
-            <router-link v-slot="{ isActive }" :to="`/spaces/${space._id}`">
-              <font-awesome-icon
-                class="honeydew-sidebar_link-active-icon"
-                :icon="['fas', 'caret-right']"
-                v-if="isActive"
-              />
-              {{ space.title }}
-            </router-link>
-          </li>
+        <ul class="honeydew-sidebar_links-list" v-if="userSpacesGetter">
+          <Sortable :list="userSpacesGetter" item-key="id" @end="logEvent" :group="sidebarGroup">
+            <template #item="{ element, index }">
+              <li class="honeydew-sidebar_link" @click="selectedLink = element.title">
+                <router-link v-slot="{ isActive }" :to="`/spaces/${element._id}`">
+                  <font-awesome-icon
+                    class="honeydew-sidebar_link-active-icon"
+                    :icon="['fas', 'caret-right']"
+                    v-if="isActive"
+                  />
+                  {{ element.title }}
+                </router-link>
+              </li>
+            </template>
+          </Sortable>
           <Transition name="slide-up">
             <li v-show="creatingSpace">
               <form @submit.prevent="callToCreateSpace">
@@ -47,6 +51,7 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
 import SidebarHeading from './SidebarHeading.vue';
+import { Sortable } from 'sortablejs-vue3';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { mainStore } from '../../store.ts';
 import { storeToRefs } from 'pinia';
@@ -60,6 +65,14 @@ const selectedLink = ref('');
 const creatingSpace = ref(false);
 const spaceTitle = ref('');
 const createSpaceInput = ref(null);
+
+const sidebarGroup = {
+  group: {
+    name: 'sidebar',
+    put: 'stage',
+    pull: null,
+  },
+};
 
 await getUserSpaces();
 
@@ -79,6 +92,10 @@ async function callToCreateSpace() {
   creatingSpace.value = false;
   spaceTitle.value = '';
   await router.push(`/spaces/${newSpace._id}`);
+}
+
+function logEvent(event) {
+  console.log(event);
 }
 </script>
 
