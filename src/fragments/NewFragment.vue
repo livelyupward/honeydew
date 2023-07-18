@@ -11,7 +11,7 @@
     ></div>
     <div class="honeydew-space_item-convert">
       <Popper>
-        <font-awesome-icon :icon="['fas', 'layer-group']" />
+        <font-awesome-icon :icon="['fal', 'list-timeline']" />
         <template #content>
           <ul>
             <li v-for="type in fragmentContentTypes">{{ fragmentMap[type].name }}</li>

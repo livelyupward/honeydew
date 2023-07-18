@@ -49,7 +49,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   const { userGetter } = storeToRefs(store);
 
   if (!userGetter.value) {
-    console.log('No user in state');
+    import.meta.env.VITE_DEBUG === 'true' && console.log('No user in state');
     if (localStorage.getItem('honeydew_my_credential')) {
       const verifyToken = await fetch(`/api/auth/callback?cred=${localStorage.getItem('honeydew_my_credential')}`, {
         method: 'POST',

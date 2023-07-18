@@ -17,11 +17,11 @@
         <ul class="honeydew-sidebar_links-list" v-if="userSpacesGetter">
           <Sortable :list="userSpacesGetter" item-key="id" @end="logEvent" :group="sidebarGroup">
             <template #item="{ element, index }">
-              <li class="honeydew-sidebar_link" @click="selectedLink = element.title">
+              <li class="honeydew-sidebar_link" @click="selectedLink = element.title" :data-space-id="element._id">
                 <router-link v-slot="{ isActive }" :to="`/spaces/${element._id}`">
                   <font-awesome-icon
                     class="honeydew-sidebar_link-active-icon"
-                    :icon="['fas', 'caret-right']"
+                    :icon="['fal', 'caret-right']"
                     v-if="isActive"
                   />
                   {{ element.title }}

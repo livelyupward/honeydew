@@ -1,7 +1,7 @@
 <template>
   <div class="honeydew-space_item">
     <div class="honeydew-space_item-sort" ref="handle">
-      <font-awesome-icon :icon="['fas', 'grip-lines']" />
+      <font-awesome-icon :icon="['fal', 'sort']" />
     </div>
     <div
       class="honeydew-space_content-item"
@@ -13,7 +13,7 @@
     </div>
     <div class="honeydew-space_item-convert">
       <Popper>
-        <font-awesome-icon :icon="['fas', 'layer-group']" />
+        <font-awesome-icon :icon="['fal', 'list-timeline']" />
         <template #content>
           <ul>
             <li>Note</li>
