@@ -15,7 +15,13 @@
           </button>
         </SidebarHeading>
         <ul class="honeydew-sidebar_links-list" v-if="userSpacesGetter">
-          <Sortable :list="userSpacesGetter" item-key="id" @end="logEvent" :group="sidebarGroup">
+          <Sortable
+            :list="userSpacesGetter"
+            item-key="id"
+            @drop="droppedSpaceItem"
+            @end.prevent="logEvent"
+            :group="sidebarGroup"
+          >
             <template #item="{ element, index }">
               <li class="honeydew-sidebar_link" @click="selectedLink = element.title" :data-space-id="element._id">
                 <router-link v-slot="{ isActive }" :to="`/spaces/${element._id}`">
@@ -89,13 +95,24 @@ function deactivateCreateSpace() {
 // function calling store create space
 async function callToCreateSpace() {
   const newSpace = await createSpace(spaceTitle.value);
+
   creatingSpace.value = false;
   spaceTitle.value = '';
+
   await router.push(`/spaces/${newSpace._id}`);
 }
 
+function droppedSpaceItem(event) {
+  const spaceToDropTo = event.target.parentNode.dataset.spaceId;
+  const itemToTransfer = event;
+}
+
 function logEvent(event) {
-  console.log(event);
+  if (event.item.classList.contains('honeydew-space_item')) {
+    console.log('tis an added space item');
+  } else if (event.item.classList.contains('honeydew-sidebar_link')) {
+    console.log('tis a space sort');
+  }
 }
 </script>
 

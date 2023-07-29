@@ -1,4 +1,5 @@
 <template>
+  <h1>Login to Honeydew</h1>
   <GoogleLogin :callback="callback" prompt auto-login />
 </template>
 
@@ -20,7 +21,9 @@ const callback = async (response) => {
       'Content-Type': 'application/json',
     },
   });
+
   if (!tokenSend.ok) throw new Error('Authentication was unsuccessful. Please login again.');
+
   const tokenResponse = await tokenSend.json();
   userEmail = tokenResponse.email;
   // Get user from honeydew db

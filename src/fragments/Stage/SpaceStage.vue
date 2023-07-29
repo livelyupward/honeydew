@@ -1,6 +1,12 @@
 <template>
   <section class="honeydew-stage" v-if="getCurrentSpace.content.length">
-    <Sortable :list="getCurrentSpace.content" item-key="id" @end="completeSorting" :group="stageGroup">
+    <Sortable
+      :list="getCurrentSpace.content"
+      item-key="id"
+      @end="completeSorting"
+      :group="stageGroup"
+      handle=".honeydew-space_item-sort"
+    >
       <template #item="{ element, index }">
         <SpaceFragment :key="element.id" :content-item="element">
           {{ element.text }}
@@ -20,7 +26,6 @@ import SpaceFragment from '../SpaceFragment.vue';
 import NewFragment from '../NewFragment.vue';
 import { ContentItem, mainStore } from '../../store.ts';
 import { storeToRefs } from 'pinia';
-import { computed, ComputedRef, ref } from 'vue';
 
 const stageGroup = {
   group: {

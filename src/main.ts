@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus, faGripLines, faLayerGroup, faXmark, faBell } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons';
 import { faHoneyPot } from '@fortawesome/pro-solid-svg-icons';
-// import { faSort } from '@fortawesome/pro-regular-svg-icons';
 import { faSort, faListTimeline, faCaretRight } from '@fortawesome/pro-light-svg-icons';
 
 library.add(
