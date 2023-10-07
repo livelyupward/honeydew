@@ -42,7 +42,16 @@
     </header>
     <header class="honeydew-sidebar_quick-items">
       <ul class="honeydew-sidebar_quick-items_list">
-        <li class="honeydew-sidebar_quick-items_list-link"></li>
+        <li class="honeydew-sidebar_quick-items_list-link">
+          <router-link v-slot="{ isActive }" :to="`/scratchpad`">
+            <font-awesome-icon
+              class="honeydew-sidebar_link-active-icon"
+              :icon="['fas', 'caret-right']"
+              v-if="isActive"
+            />
+            Scratchpad
+          </router-link>
+        </li>
       </ul>
     </header>
   </aside>
@@ -64,7 +73,7 @@ const { userSpaces, userSpacesGetter } = storeToRefs(store);
 const selectedLink = ref('');
 const creatingSpace = ref(false);
 const spaceTitle = ref('');
-const createSpaceInput = ref(null);
+const createSpaceInput = ref<HTMLInputElement | null>(null);
 
 const sidebarGroup = {
   group: {
@@ -76,9 +85,12 @@ const sidebarGroup = {
 
 await getUserSpaces();
 
-async function activateCreateSpace() {
+async function activateCreateSpace(): Promise<any> {
   creatingSpace.value = true;
   await nextTick();
+
+  if (!createSpaceInput.value) return;
+
   createSpaceInput.value.focus();
 }
 
@@ -87,14 +99,14 @@ function deactivateCreateSpace() {
   spaceTitle.value = '';
 }
 // function calling store create space
-async function callToCreateSpace() {
+async function callToCreateSpace(): Promise<any> {
   const newSpace = await createSpace(spaceTitle.value);
   creatingSpace.value = false;
   spaceTitle.value = '';
   await router.push(`/spaces/${newSpace._id}`);
 }
 
-function logEvent(event) {
+function logEvent(event: Event) {
   console.log(event);
 }
 </script>

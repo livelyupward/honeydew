@@ -20,7 +20,11 @@ import SpaceFragment from '../SpaceFragment.vue';
 import NewFragment from '../NewFragment.vue';
 import { ContentItem, mainStore } from '../../store.ts';
 import { storeToRefs } from 'pinia';
-import { computed, ComputedRef, ref } from 'vue';
+
+interface SortableEvent extends Event {
+  oldIndex: number;
+  newIndex: number;
+}
 
 const stageGroup = {
   group: {
@@ -37,12 +41,12 @@ const { submitCurrentSpaceContent } = store;
 // @ts-ignore
 let mutableContent: ContentItem[] = getCurrentSpace.value.content;
 
-const moveItemInArray = (array, from, to) => {
+const moveItemInArray = (array: any[], from: number, to: number) => {
   const item = array.splice(from, 1)[0];
   array.splice(to, 0, item);
 };
 
-async function completeSorting(event) {
+async function completeSorting(event: SortableEvent) {
   moveItemInArray(mutableContent, event.oldIndex, event.newIndex);
   // @ts-ignore
   await submitCurrentSpaceContent({ ...getCurrentSpace.value, content: mutableContent });

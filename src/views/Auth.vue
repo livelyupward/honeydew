@@ -11,7 +11,7 @@ const { getUser } = store;
 const { userGetter } = storeToRefs(store);
 
 const router = useRouter();
-const callback = async (response) => {
+const callback = async (response: any) => {
   let userEmail;
 
   const tokenSend = await fetch(`/api/auth/callback?cred=${response.credential}`, {
@@ -35,6 +35,7 @@ const callback = async (response) => {
     });
     if (!registerUserRequest.ok) throw new Error('User account could not be created. Please try again.');
     const registerUserResponse = await registerUserRequest.json();
+    console.log('!! ', registerUserResponse);
   }
 
   await getUser(userEmail);

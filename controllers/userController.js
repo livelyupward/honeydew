@@ -14,7 +14,7 @@ export default {
 
       res.status(200).send(user);
     } catch (error) {
-      return { error };
+      res.status(500).send(error);
     }
   },
 
