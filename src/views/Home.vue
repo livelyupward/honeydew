@@ -1,11 +1,18 @@
 <template>
-  <main class="honeydew_main-container">
-    <SortableStage />
-  </main>
+  <div id="app-container">
+    <Suspense>
+      <Sidebar />
+      <template #fallback> Loading sidebar... </template>
+    </Suspense>
+    <Suspense>
+      <router-view></router-view>
+      <template #fallback> Loading your data... </template>
+    </Suspense>
+  </div>
 </template>
 
-<script setup>
-import SortableStage from '../fragments/Stage/SpaceStage.vue';
+<script lang="ts" setup>
+import Sidebar from '../fragments/Sidebar/Sidebar.vue';
 </script>
 
 <style lang="scss" scoped>

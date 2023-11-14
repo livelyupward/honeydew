@@ -1,19 +1,8 @@
 <template>
-  <div id="app-container">
-    <Suspense>
-      <Sidebar />
-      <template #fallback> Loading sidebar... </template>
-    </Suspense>
-    <Suspense>
-      <router-view></router-view>
-      <template #fallback> Loading your data... </template>
-    </Suspense>
-  </div>
+  <router-view> </router-view>
 </template>
 
-<script setup lang="ts">
-import Sidebar from './fragments/Sidebar/Sidebar.vue';
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss">
 #app {

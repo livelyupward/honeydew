@@ -4,8 +4,18 @@ import { createWebHistory, createRouter, RouteLocationNormalized, NavigationGuar
 
 const routes = [
   {
-    path: '/',
+    path: '/:id',
     component: () => import('./views/Home.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./views/Space.vue'),
+      },
+      {
+        path: '/today',
+        component: () => import('./views/Today.vue'),
+      },
+    ],
     // @ts-ignore
     beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
       const store = mainStore();
@@ -13,22 +23,14 @@ const routes = [
 
       if (!userGetter.value) throw new Error('No user found before navigation. Please login.');
 
-      if (userGetter.value.activeSpace) await router.push(`/spaces/${userGetter.value.activeSpace}`);
+      // if (userGetter.value) await router.push(`/${userGetter.value._id}`);
 
-      next();
+      next(`/${userGetter.value._id}`);
     },
   },
   {
     path: '/auth',
     component: () => import('./views/Auth.vue'),
-  },
-  {
-    path: '/today',
-    component: () => import('./views/Today.vue'),
-  },
-  {
-    path: '/spaces/:id',
-    component: () => import('./views/Space.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
